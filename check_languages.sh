@@ -30,37 +30,37 @@ class PluginChecker {
    * @return an array containing all the PHP files.
    */
   private function getPHPfiles($c_dir, $path) {
-	 /* We enter in the current directory */
+     /* We enter in the current directory */
      chdir($c_dir);
 
      $path = $path.'/'.$c_dir;
 
-	 /* This var will contains all the PHP files. */
+     /* This var will contains all the PHP files. */
      $files = array();
 
-	 /* We open the dir to read all the files */
+     /* We open the dir to read all the files */
      if(!$dir = opendir('.')) {
        return $files;
      }
      
      while(false !== ($file = readdir($dir))) {
-		/* If the file is a directory, we enter in it. */
-		if(is_dir($file)) {
-		  if($file != 'languages' && $file != '.' && $file != '..') {
-			$files = array_merge($files, $this->getPHPfiles($file, $path));
-		  }
-		}
-		else
-		/* If the file is a PHP files, we add it into the list. */
-		if(substr($file, -4, 4) == '.php') {
-		  $files[] = $path.'/'.$file;
-		}
-	  }
-	  closedir($dir);
+        /* If the file is a directory, we enter in it. */
+        if(is_dir($file)) {
+          if($file != 'languages' && $file != '.' && $file != '..') {
+            $files = array_merge($files, $this->getPHPfiles($file, $path));
+          }
+        }
+        else
+        /* If the file is a PHP files, we add it into the list. */
+        if(substr($file, -4, 4) == '.php') {
+          $files[] = $path.'/'.$file;
+        }
+      }
+      closedir($dir);
 
-	  chdir('..');
+      chdir('..');
 
-	  return $files;
+      return $files;
   }
 
   /**
@@ -85,8 +85,9 @@ class PluginChecker {
 
     /* For each file in the directory, we open all file with the php extension. */
     while(false !== ($file = readdir($dir))) {
-      if(!is_dir($file) && substr($file, -4, 4) == '.php')
+      if(!is_dir($file) && substr($file, -4, 4) == '.php') {
         include_once($plugin.'/languages/'.$file);
+      }
     }
     closedir($dir);
     $this->_lang = $lang;
@@ -100,41 +101,42 @@ class PluginChecker {
    */
   function check() {
 
-	if(!empty($this->_lang)) 
-	foreach($this->_lang AS $lg => $tr) {
+    if(!empty($this->_lang)) {
+      foreach($this->_lang AS $lg => $tr) {
 
-	  /* Initialize the starting state. */
-	  foreach($tr AS $key => $stc) {
-		$matched[$key] = false;
-	  }
+        /* Initialize the starting state. */
+        foreach($tr AS $key => $stc) {
+          $matched[$key] = false;
+        }
 
-	  /* In each file, we check if keys are matched. */
-	  foreach($this->_files AS $file) {
-		$handle = fopen($file, "r");
-		$size = filesize($file);
+        /* In each file, we check if keys are matched. */
+        foreach($this->_files AS $file) {
+          $handle = fopen($file, "r");
+          $size = filesize($file);
 
-		if($size == 0) {
-		  echo "The file $file is empty.\n";
-		}
-		else {
-		  $contents = fread($handle, $size);  
+          if($size == 0) {
+            echo "The file $file is empty.\n";
+          }
+          else {
+            $contents = fread($handle, $size);  
 
-		  /* We check each key on the contents. */
-		  foreach($tr AS $key => $stc) {
-			if(strpos($contents, "'$key'") !== false || strpos($contents, "\"$key\"") !== false) {
-			  $matched[$key] = true;
-			}
-		  }
-		}
-		fclose($handle);
-	  }
+            /* We check each key on the contents. */
+            foreach($tr AS $key => $stc) {
+              if(strpos($contents, "'$key'") !== false || strpos($contents, "\"$key\"") !== false) {
+                $matched[$key] = true;
+              }
+            }
+          }
+          fclose($handle);
+        }
 
-	  /* Finally, we print the keys unmatched. */
-	  foreach($tr AS $key => $stc) {
-		if($matched[$key] == false)
-		  echo "$key from the language $lg is not found in the plugin ".$this->_plugin."\n";
-	  }
-	}
+        /* Finally, we print the keys unmatched. */
+        foreach($tr AS $key => $stc) {
+          if($matched[$key] == false)
+            echo "$key from the language $lg is not found in the plugin ".$this->_plugin."\n";
+        }
+      }
+    }
   }
 }
 
@@ -144,9 +146,9 @@ $dir = opendir('.');
 /* For each file in the directory, we load the plugin's language */
 while(false !== ($file = readdir($dir))) {
   if($file != '.' && $file != '..' && is_dir($file)) {
-	$pl = new PluginChecker();
-	$pl->load($file);
-	$pl->check();
+    $pl = new PluginChecker();
+    $pl->load($file);
+    $pl->check();
   }
 }
 closedir($dir);
