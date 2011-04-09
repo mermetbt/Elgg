@@ -41,6 +41,9 @@ function dropbox_init() {
 
 	// Extend hover-over and profile menu
 	elgg_extend_view('profile/menu/links', 'dropbox/menu');
+
+	/* Add CSS rules. */
+	elgg_extend_view('css', 'dropbox/css');
 }
 
 /**
