@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+        <field key="author" value="Timothé Mermet-Buffet" />
+        <field key="version" value="0.1" />
+        <field key="description" value="Elgg Dropbox plugin" />
+        <field key="website" value="http://www.elgg.org/" />
+        <field key="copyright" value="(C) Timothé Mermet-Buffet 2011" />
+        <field key="licence" value="GNU Public License version 2" />
+        <field key="elgg_version" value="2011030101" />
+</plugin_manifest>
