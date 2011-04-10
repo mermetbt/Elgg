@@ -1,3 +1,4 @@
+<div  class="contentWrapper">
 <b>
 	<?php
 	switch ($vars['errcode']) {
@@ -17,5 +18,5 @@
 			echo elgg_echo('dropbox:error:unknow');
 	}
 	?>
-</b>
+</b></div>
 <?php
