@@ -60,34 +60,29 @@ function dropbox_connect() {
 	$consumer_secret = get_plugin_setting('consumer_secret', 'dropbox');
 	if ($consumer_key && $consumer_secret) {
 
-		// check user settings
+		/* check user settings */
 		$user_id = get_loggedin_userid();
-		$access_key = get_plugin_usersetting('access_key', $user_id, 'dropbox');
-		$access_secret = get_plugin_usersetting('access_secret', $user_id, 'dropbox');
-		if ($access_key && $access_secret) {
-			/* Start the connector. */
+		$token = get_plugin_usersetting('token', $user_id, 'dropbox');
+		$token_secret = get_plugin_usersetting('token_secret', $user_id, 'dropbox');
+
+		if ($token && $token_secret) {
 			try {
 				$oauth = new Dropbox_OAuth_ELGG($consumer_key, $consumer_secret);
 				$dropbox = new Dropbox_API($oauth);
-				
-				/* Identification. */
+				$CONFIG->dropbox = $dropbox;
 				try {
-					$tokens = $dropbox->getToken($access_key, $access_secret);
+					$oauth->setToken($token, $token_secret);
+					/*
+					 * Get account information. This initiate a request to Dropbox,
+					 * and allow us to know if the consumer is good.
+					 */
+					$dropbox->getAccountInfo();
 				} catch (Dropbox_Exception $e) {
 					return DROPBOX_USERPASS_FAILED;
 				}
-				$oauth->setToken($tokens);
-
-				/*
-				 * Get account information. This initiate a request to Dropbox,
-				 * and allow us to know if the consumer is good.
-				 */
-				$dropbox->getAccountInfo();
 			} catch (Dropbox_Exception $e) {
 				return DROPBOX_CONSUMER_FAILED;
 			}
-
-			$CONFIG->dropbox = $dropbox;
 		} else {
 			return DROPBOX_USERPASS_MISSING;
 		}
@@ -171,40 +166,43 @@ function dropbox_page_handler($page) {
  * @param const $order Order (SORT_ASC/SORT_DESC)
  * @return array Sorted array
  */
-function array_sort($array, $on, $order=SORT_ASC)
-{
-    $new_array = array();
-    $sortable_array = array();
+function array_sort($array, $on, $order=SORT_ASC) {
+	$new_array = array();
+	$sortable_array = array();
 
-    if (count($array) > 0) {
-        foreach ($array as $k => $v) {
-            if (is_array($v)) {
-                foreach ($v as $k2 => $v2) {
+	if (count($array) > 0) {
+		foreach ($array as $k => $v) {
+			if (is_array($v)) {
+				foreach ($v as $k2 => $v2) {
 					$v2 = (empty($v2)) ? 2 : 1;
-                    if ($k2 == $on) {
-                        $sortable_array[$k] = $v2;
-                    }
-                }
-            } else {
-                $sortable_array[$k] = $v;
-            }
-        }
+					if ($k2 == $on) {
+						$sortable_array[$k] = $v2;
+					}
+				}
+			} else {
+				$sortable_array[$k] = $v;
+			}
+		}
 
-        switch ($order) {
-            case SORT_ASC:
-                asort($sortable_array);
-            break;
-            case SORT_DESC:
-                arsort($sortable_array);
-            break;
-        }
+		switch ($order) {
+			case SORT_ASC:
+				asort($sortable_array);
+				break;
+			case SORT_DESC:
+				arsort($sortable_array);
+				break;
+		}
 
-        foreach ($sortable_array as $k => $v) {
-            $new_array[$k] = $array[$k];
-        }
-    }
+		foreach ($sortable_array as $k => $v) {
+			$new_array[$k] = $array[$k];
+		}
+	}
 
-    return $new_array;
+	return $new_array;
 }
 
 register_elgg_event_handler('init', 'system', 'dropbox_init');
+
+global $CONFIG;
+
+register_action('dropbox/delete', false, $CONFIG->pluginspath . 'dropbox/actions/delete.php');

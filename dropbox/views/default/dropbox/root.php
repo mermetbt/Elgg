@@ -3,19 +3,20 @@
 $dropbox = $CONFIG->dropbox;
 
 /* Just a little test to try folder creation and deletion.
-$dropbox->createFolder('tmp');
+  $dropbox->createFolder('tmp');
 
-try {
+  try {
   $dropbox->delete('tmp');
-} catch(Dropbox_Exception_NotFound $e) {
-	echo '<b>', 'Directory not found', '</b>';
-}
-*/
+  } catch(Dropbox_Exception_NotFound $e) {
+  echo '<b>', 'Directory not found', '</b>';
+  }
+ */
 
 /* Get the directory in args. */
 $path = $vars['path'];
-if(!isset($path))
-  $path = '';
+if (!isset($path)) {
+	$path = '';
+}
 
 /* Get listing of the root directory. */
 $files = $dropbox->getLinks($path);
@@ -48,27 +49,34 @@ $share_button = elgg_view('input/submit', array(
 
 /* Print the buttons. */
 echo '<div class="dropbox_buttons">';
-echo $upload_button, $mkdir_button, $share_button;
+$body = $upload_button . $mkdir_button . $share_button;
+echo elgg_view('input/form', array('body' => $body, 'action' => $vars['url'] . 'actions/dropbox/upload', 'method' => 'post'));
 echo '</div>';
 
-
-/* Print the table header of the filelist. */
-echo '<table class="dropbox-list">', '<thead>';
-
-$checkbox = elgg_view('input/checkboxes', array(
-			'internalname' => 'selectall',
-			'options' => array('' => 'all'),
-			'class' => 'checkbox',
+/* Add parameters to the form */
+$body = elgg_view('input/hidden', array(
+			'internalname' => 'path',
+			'value' => $path,
 		));
 
-echo '<th class="selector">', $checkbox, '</th>';
-echo '<th class="filename">', elgg_echo('dropbox:filename'), '</th>';
-echo '<th class="size">', elgg_echo('dropbox:size'), '</th>';
-echo '<th class="modified">', elgg_echo('dropbox:modified'), '</th>';
-echo '</thead>';
+/* Add the table header of the filelist. */
+$body .= '<table class="dropbox-list">' . '<thead>';
 
-if(!empty($files['path']) || empty($files)) {
-	echo '<tr>';
+$checkbox = elgg_view('input/checkboxes', array(
+			'class' => 'selector-checkbox',
+			'options' => array('' => 'select'),
+			'js' => 'onclick="javascript:$(\'.checkbox\').click();"',
+		));
+
+$body .= '<th class="selector">' . $checkbox . '</th>';
+$body .= '<th class="filename">' . elgg_echo('dropbox:filename') . '</th>';
+$body .= '<th class="size">' . elgg_echo('dropbox:size') . '</th>';
+$body .= '<th class="modified">' . elgg_echo('dropbox:modified') . '</th>';
+$body .= '</thead>';
+
+/* Show the link to go to the parent directory if needed. */
+if (!empty($files['path']) || empty($files)) {
+	$body .= '<tr>';
 
 	/* Remove the last directory in the path. */
 	$sub_path = substr($path, 1);
@@ -76,49 +84,55 @@ if(!empty($files['path']) || empty($files)) {
 
 	/* Create the link to the change the Dropbox directory. */
 	$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'], array('path' => $reduced_path));
-	$link = '<a href="'. $url .'">' . elgg_echo('dropbox:parent_folder') . '</a>';
+	$link = '<a href="' . $url . '">' . elgg_echo('dropbox:parent_folder') . '</a>';
 
-	echo '<td class="selector"></td>';
-	echo '<td class="filename">', $link, '</td>';
-	echo '<td class="size"></td>';
-	echo '<td class="modified"></td>';
-	echo '</tr>';
+	$body .= '<td class="selector"></td>';
+	$body .= '<td class="filename">' . $link . '</td>';
+	$body .= '<td class="size"></td>';
+	$body .= '<td class="modified"></td>';
+	$body .= '</tr>';
 }
 
 /* List all files from the Dropbox directory. */
 foreach ($contents AS $file) {
-	echo '<tr>';
+	$body .= '<tr>';
 
 	/* Remove the / at the begining of the filename. */
-	$filename = substr($file['path'], 1+strlen($path));
+	$filename = substr($file['path'], 1 + strlen($path));
 
 
 	/* Create the link to the change the Dropbox directory. */
 	$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'], array('path' => $file['path']));
-	$link = '<a href="'. $url .'">' . $filename . '</a>';
-	
+	$link = '<a href="' . $url . '">' . $filename . '</a>';
+
 	$checkbox = elgg_view('input/checkboxes', array(
-				'internalname' => 'params[selected_files]',
+				'internalname' => 'selected_files[]',
 				'options' => array('' => $file['path']),
 				'class' => 'checkbox',
 			));
-	if($file['is_dir'] == 1) {
+	if ($file['is_dir'] == 1) {
 		$size = '';
 		$modified = '';
 	} else {
-	    $size = $file['size'];
+		$size = $file['size'];
 		$modified = $file['modified'];
 	}
 
-	echo '<td class="selector">', $checkbox,'</td>';
-	echo '<td class="filename">', $link, '</td>';
-	echo '<td class="size">', $size, '</td>';
-	echo '<td class="modified">', $modified, '</td>';
-	echo '</tr>';
+	$body .= '<td class="selector">' . $checkbox . '</td>';
+	$body .= '<td class="filename">' . $link . '</td>';
+	$body .= '<td class="size">' . $size . '</td>';
+	$body .= '<td class="modified">' . $modified . '</td>';
+	$body .= '</tr>';
 }
 
-echo '</table>';
-//echo '<pre>';
-//print_r($files);
-//echo '</pre>';
+$body .= '</table>';
+
+/* Create the 'share a folder' button. */
+$body .= elgg_view('input/submit', array(
+			'value' => elgg_echo('delete'),
+			'class' => 'delete_button',
+		));
+
+echo elgg_view('input/form', array('body' => $body, 'action' => $vars['url'] . 'actions/dropbox/delete', 'method' => 'post'));
+
 echo '</div>';
