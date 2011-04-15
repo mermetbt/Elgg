@@ -15,6 +15,7 @@ $english = array(
 	'dropbox:sharefolder' => 'Share a folder',
 	'dropbox:put' => 'Put a file',
 	'dropbox:remove' => 'Remove a file',
+	'dropbox:deleted' => 'File(s) deleted.',
 	'dropbox:filename' => 'File Name',
 	'dropbox:size' => 'Size',
 	'dropbox:modified' => 'Modified',

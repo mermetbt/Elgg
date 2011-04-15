@@ -93,6 +93,7 @@ if (!empty($files['path']) || empty($files)) {
 	$body .= '</tr>';
 }
 
+$counter = 0;
 /* List all files from the Dropbox directory. */
 foreach ($contents AS $file) {
 	$body .= '<tr>';
@@ -123,6 +124,7 @@ foreach ($contents AS $file) {
 	$body .= '<td class="size">' . $size . '</td>';
 	$body .= '<td class="modified">' . $modified . '</td>';
 	$body .= '</tr>';
+	$counter++;
 }
 
 $body .= '</table>';
@@ -133,6 +135,6 @@ $body .= elgg_view('input/submit', array(
 			'class' => 'delete_button',
 		));
 
-echo elgg_view('input/form', array('body' => $body, 'action' => $vars['url'] . 'actions/dropbox/delete', 'method' => 'post'));
+echo elgg_view('input/form', array('body' => $body, 'action' => $vars['url'] . 'action/dropbox/delete', 'method' => 'post'));
 
 echo '</div>';

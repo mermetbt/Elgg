@@ -20,6 +20,7 @@
 }
 .dropbox-list .selector {
 	text-align: left;
+	width: 30px;
 }
 .dropbox_buttons {
 	-webkit-border-radius: 8px;
