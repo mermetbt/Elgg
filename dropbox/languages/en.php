@@ -18,6 +18,7 @@ $english = array(
 	'dropbox:filename' => 'File Name',
 	'dropbox:size' => 'Size',
 	'dropbox:modified' => 'Modified',
+	'dropbox:parent_folder' => 'Parent folder',
 	'dropbox:access_key' => 'Access Key',
 	'dropbox:access_secret' => 'Access Secret',
 	'dropbox:consumer_key' => 'Consumer Key',
