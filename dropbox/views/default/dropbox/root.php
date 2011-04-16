@@ -47,7 +47,7 @@ $share_button = elgg_view('input/submit', array(
 			'value' => elgg_echo('dropbox:sharefolder'),
 			'class' => 'share_button',
 		));
-echo elgg_view('input/form', array('body' => $body.$share_button, 'action' => $vars['url'] . 'pg/dropbox/share', 'method' => 'post'));
+//echo elgg_view('input/form', array('body' => $body.$share_button, 'action' => $vars['url'] . 'pg/dropbox/share', 'method' => 'post'));
 
 echo '</div>';
 

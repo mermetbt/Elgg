@@ -25,7 +25,7 @@ try {
 
 	$CONFIG->dropbox->putFile($path . '/' . $file, $_FILES['file']['tmp_name']);
 
-	system_message(sprintf(elgg_echo('dropbox:uploaded'), $file));
+	system_message(sprintf(elgg_echo('dropbox:upload:uploaded'), $file));
 	forward('pg/dropbox/root/?path=' . $path);
 } catch (Dropbox_Exception_NotFound $e) {
 	register_error(elgg_echo("dropbox:notfound"));

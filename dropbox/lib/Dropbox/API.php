@@ -121,7 +121,7 @@ class Dropbox_API {
 
         if (is_null($root)) $root = $this->root;
 
-				/* Fix a bug with the special character. */
+		/* Fix a bug with the special character. */
 		$path = urlencode($path);
         $path = str_replace('%2F', '/', $path);
 		$path = str_replace('+', '%20', $path);
@@ -142,9 +142,14 @@ class Dropbox_API {
      */
     public function putFile($path, $file, $root = null) {
 
+		/* Fix a bug with the special character. */
+		$path = urlencode($path);
+        $path = str_replace('%2F', '/', $path);
+		$path = str_replace('+', '%20', $path);
+
         $directory = dirname($path);
         $filename = basename($path);
-
+		echo $path;
 		if($directory==='.') $directory = '';
         if (is_null($root)) $root = $this->root;
 
@@ -338,7 +343,7 @@ class Dropbox_API {
         );
 
         $body="--" . $boundary . "\r\n";
-        $body.="Content-Disposition: form-data; name=file; filename=".$filename."\r\n";
+        $body.="Content-Disposition: form-data; name=file; filename=".urldecode($filename)."\r\n";
         $body.="Content-type: application/octet-stream\r\n";
         $body.="\r\n";
         $body.=stream_get_contents($file);

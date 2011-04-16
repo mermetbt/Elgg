@@ -40,7 +40,7 @@ $body .= '<div class="contentWrapper">';
 $body .= elgg_echo('dropbox:folder:share:selectusers');
 
 $body .= elgg_view('input/userpicker', array(
-			'internalname' => 'selecteduser',
+			'internalname' => 'selectedusers',
 		));
 
 $body .= elgg_view('input/submit', array(
@@ -59,4 +59,3 @@ echo elgg_view('input/form', array(
 			'body' => $body,
 			'action' => $vars['url'] . 'action/dropbox/share',
 			'method' => 'post'));
-
