@@ -120,6 +120,13 @@ class Dropbox_API {
     public function getFile($path = '', $root = null) {
 
         if (is_null($root)) $root = $this->root;
+
+				/* Fix a bug with the special character. */
+		$path = urlencode($path);
+        $path = str_replace('%2F', '/', $path);
+		$path = str_replace('+', '%20', $path);
+
+
         $result = $this->oauth->fetch('http://api-content.dropbox.com/0/files/' . $root . '/' . ltrim($path,'/'));
         return $result['body'];
 

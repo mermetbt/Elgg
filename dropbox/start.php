@@ -172,3 +172,4 @@ register_action('dropbox/share', false, $CONFIG->pluginspath . 'dropbox/actions/
 register_action('dropbox/upload', false, $CONFIG->pluginspath . 'dropbox/actions/upload.php');
 register_action('dropbox/mkdir', false, $CONFIG->pluginspath . 'dropbox/actions/mkdir.php');
 register_action('dropbox/delete', false, $CONFIG->pluginspath . 'dropbox/actions/delete.php');
+register_action('dropbox/getfile', false, $CONFIG->pluginspath . 'dropbox/actions/getfile.php');

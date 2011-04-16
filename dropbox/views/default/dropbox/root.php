@@ -89,6 +89,7 @@ if (!empty($files['path']) || empty($files)) {
 }
 
 $counter = 0;
+$form_accu = '';
 /* List all files from the Dropbox directory. */
 foreach ($contents AS $file) {
 	$body .= '<tr>';
@@ -112,9 +113,21 @@ foreach ($contents AS $file) {
 	}
 	
 	/* Create the link to the change the Dropbox directory. */
-	$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'], array('path' => $file['path']));
-	$link = '<a class="dropbox-sprite-link" href="' . $url . '"><img class="sprite ' . $css . '" alt=""></a>';
-    $link .= '<a class="dropbox-link" href="' . $url . '">' . $filename . '</a>';
+	if($file['is_dir']) {
+		$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'], array('path' => $file['path']));
+		$link = '<a class="dropbox-sprite-link" href="' . $url . '"><img class="sprite ' . $css . '" alt=""></a>';
+		$link .= '<a class="dropbox-link" href="' . $url . '">' . $filename . '</a>';
+	} else {
+		$value = elgg_view('input/hidden', array('internalname' => 'file', 'value' => $file['path']));
+		$link = '<a class="dropbox-sprite-link" href="#" onclick="javascript:document.dropbox_form_'.$counter.'.submit();"><img class="sprite ' . $css . '" alt=""></a>';
+		$link .= '<a class="dropbox-link" href="#" onclick="javascript:document.dropbox_form_'.$counter.'.submit();">' . $filename . '</a>';
+		$form_accu .= elgg_view('input/form', array(
+						'id' => 'dropbox_form_'.$counter,
+						'internalname' => 'dropbox_form_'.$counter,
+						'body' => $value,
+						'action' => $vars['url'] . 'action/dropbox/getfile',
+						'method' => 'post'));
+	}
 
 	/* Create the checkbox */
 	$checkbox = elgg_view('input/checkboxes', array(
@@ -152,3 +165,4 @@ $body .= elgg_view('input/submit', array(
 echo elgg_view('input/form', array('body' => $body, 'action' => $vars['url'] . 'action/dropbox/delete', 'method' => 'post'));
 
 echo '</div>';
+echo $form_accu;
