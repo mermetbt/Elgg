@@ -82,9 +82,9 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 	 */
 	function url_getter_getUrl($url, $args = array()) {
 
-		global $release;
-		//echo $url.'<br>';
-		$userAgent = '(Elgg ' . $release . ')';
+		global $CONFIG;
+
+		$userAgent = '(Elgg ' . $CONFIG->release . ')';
 		
 		$ch = curl_init();
 		//curl_setopt($ch, CURLOPT_HTTPHEADER, "Host: api.dropbox.com");
@@ -95,7 +95,7 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 		curl_setopt($ch, CURLOPT_AUTOREFERER, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_VERBOSE, true);
 
 		if (!empty($args['username']) && !empty($args['password'])) {
 			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
@@ -137,19 +137,25 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 		/* Get the token */
 		$token = $this->getToken();
 
+		$args = array();
+
 		/* If the token isn't empty, we use it only. */
 		if (!empty($token['token']) && !empty($token['token_secret'])) {
-			$arguments = array_merge($arguments, array('oauth_token' => $token['token']));
+			$args = array_merge($args, array('oauth_token' => $token['token']));
 			$tokensign = new OAuthToken($token['token'], $token['token_secret']);
 		} else {
 			$tokensign = NULL;
+		}
+
+		if(!$arguments['post']) {
+			$args = array_merge($args, $arguments);
 		}
 
 		/* Generate the HTTP request */
 		$request = OAuthRequest::from_consumer_and_token($this->consumer,
 						NULL,
 						$method,
-						$uri, $arguments);
+						$uri, $args);
 
 		/* Generate the signature of the request. */
 		$request->sign_request($sign, $this->consumer, $tokensign);
@@ -157,9 +163,11 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 		/* Convert the request into an URL. */
 		$reqUrl = $request->to_url();
 
+		$arguments['headers'] = $httpHeaders;
+		
 		/* Execute the request. */
 		$out = $this->url_getter_getUrl($reqUrl, $arguments);
-		
+
 		/* Handle the different HTTP codes. */
 		switch ($out['rc']) {
 			/* All is OK */
@@ -169,6 +177,8 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 					'httpStatus' => $out['rc'],
 					'body' => $out['html']);
 
+			case '400':
+				throw new Dropbox_Exception_Forbidden('Operation attempted not allowed by token type. Root parameter is not full access or Sandbox.');
 			/* Forbidden */
 			case '401':
 				throw new Dropbox_Exception_Forbidden('Forbidden. Username or password incorrect.');
@@ -181,7 +191,7 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 			case '507' :
 				throw new Dropbox_Exception_OverQuota('This dropbox is full');
 			default:
-				throw new Dropbox_Exception('Unknow');
+				throw new Dropbox_Exception('Unknow : ' . $out['rc']);
 		}
 	}
 

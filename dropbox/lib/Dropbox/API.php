@@ -138,18 +138,23 @@ class Dropbox_API {
         $directory = dirname($path);
         $filename = basename($path);
 
-        if($directory==='.') $directory = '';
+		if($directory==='.') $directory = '';
         if (is_null($root)) $root = $this->root;
 
         if (is_string($file)) {
 
-            $file = fopen($file,'r');
+            $file = fopen($file, 'r');
 
         } elseif (!is_resource($file)) {
 
             throw new Dropbox_Exception('File must be a file-resource or a string');
             
         }
+
+		if(!$file) {
+			throw new Dropbox_Exception('File not found : '.$file);
+		}
+
         $this->multipartFetch('http://api-content.dropbox.com/0/files/' . $root . '/' . trim($directory,'/'), $file, $filename);
         return true;
     }
@@ -321,7 +326,8 @@ class Dropbox_API {
         $boundary = 'R50hrfBj5JYyfR3vF3wR96GPCC9Fd2q2pVMERvEaOE3D8LZTgLLbRpNwXek3';
 
         $headers = array(
-            'Content-Type' => 'multipart/form-data; boundary=' . $boundary,
+            'Content-Type: multipart/form-data; boundary=' . $boundary,
+			'Content-Disposition: form-data; name=file; filename='.$filename,
         );
 
         $body="--" . $boundary . "\r\n";
@@ -334,9 +340,9 @@ class Dropbox_API {
 
         // Dropbox requires the filename to also be part of the regular arguments, so it becomes
         // part of the signature. 
-        $uri.='?file=' . $filename;
+        $uri .= '?file=' . $filename;
 
-        return $this->oauth->fetch($uri, $body, 'POST', $headers);
+        return $this->oauth->fetch($uri, array('post' => 1, 'data' => $body), 'POST', $headers);
 
     }
 

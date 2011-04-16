@@ -2,6 +2,26 @@
 
 $path = $vars['path'];
 
-echo '<div class="contentWrapper">';
+$body .= '<div class="contentWrapper">';
 
-echo '</div>';
+$body .= elgg_view('input/file', array(
+			'internalname' => 'file',
+		));
+
+$body .= elgg_view('input/submit', array(
+			'internalname' => 'submit',
+			'value' => elgg_echo('upload'),
+		));
+
+$body .= elgg_view('input/submit', array(
+			'internalname' => 'submit',
+			'value' => elgg_echo('cancel'),
+		));
+
+$body .= '</div>';
+
+echo elgg_view('input/form', array(
+			'body' => $body,
+			'enctype' => 'multipart/form-data',
+			'action' => $vars['url'] . 'action/dropbox/upload',
+			'method' => 'post'));

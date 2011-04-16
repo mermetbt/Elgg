@@ -16,6 +16,7 @@ $english = array(
 	'dropbox:remove' => 'Remove a file',
 	'dropbox:share' => 'Share',
 	'dropbox:deleted' => 'File(s) deleted.',
+	'dropbox:uploaded' => 'File %s uploaded.',
 	'dropbox:folder:created' => 'Folder %s created.',
 	'dropbox:folder:new:info' => 'Enter the name of the folder you want at %s',
 	'dropbox:folder:share:info' => 'Share a folder with your friends.',
