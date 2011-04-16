@@ -11,7 +11,7 @@ $folder = get_input('name');
 
 /* Redirect the user if Cancel is clicked. */
 $submit = get_input('submit');
-if($submit == elgg_echo('cancel')) {
+if ($submit == elgg_echo('cancel')) {
 	forward('pg/dropbox/root/?path=' . $path);
 }
 

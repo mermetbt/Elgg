@@ -16,18 +16,18 @@ set_plugin_usersetting('access_secret', '', $user_id, 'dropbox');
 try {
 	$oauth = new Dropbox_OAuth_ELGG($consumer_key, $consumer_secret);
 	$dropbox = new Dropbox_API($oauth);
-}catch(Dropbox_Exception $e) {
+} catch (Dropbox_Exception $e) {
 	register_error(elgg_echo('dropbox:error:badconsumer'));
 }
 
 /* Check the validity of the username and password. */
-if($access_key && $access_secret) {
+if ($access_key && $access_secret) {
 	try {
 		$tokens = $dropbox->getToken($access_key, $access_secret);
 		set_plugin_usersetting('token', $tokens['token'], $user_id, 'dropbox');
 		set_plugin_usersetting('token_secret', $tokens['token_secret'], $user_id, 'dropbox');
-	}catch(Dropbox_Exception $e) {
-        /* Set the token and token_secret to empty. */
+	} catch (Dropbox_Exception $e) {
+		/* Set the token and token_secret to empty. */
 		set_plugin_usersetting('token', '', $user_id, 'dropbox');
 		set_plugin_usersetting('token_secret', '', $user_id, 'dropbox');
 
@@ -45,14 +45,13 @@ $oauth->setToken($token, $token_secret);
  * and allow us to know if the consumer and tokens are good.
  */
 try {
-	if($token && $token_secret) {
+	if ($token && $token_secret) {
 		$dropbox->getAccountInfo();
 		echo elgg_echo('dropbox:usersettings:linked');
 	} else {
 		echo elgg_echo('dropbox:usersettings:userpass');
 	}
-}
-catch(Dropbox_Exception $e) {
+} catch (Dropbox_Exception $e) {
 	register_error(elgg_echo('dropbox:error:baduserpass'));
 }
 
@@ -62,17 +61,17 @@ echo '<p>' . elgg_echo('dropbox:usersettings:description') . '</p>';
 
 $access_key_string = elgg_echo('dropbox:access_key');
 $access_key_view = elgg_view('input/text', array(
-	'internalname' => 'params[access_key]',
-	'value' => $vars['entity']->access_key,
-	'class' => 'text_input',
-));
+			'internalname' => 'params[access_key]',
+			'value' => $vars['entity']->access_key,
+			'class' => 'text_input',
+		));
 
 $access_secret_string = elgg_echo('dropbox:access_secret');
 $access_secret_view = elgg_view('input/password', array(
-	'internalname' => 'params[access_secret]',
-	'value' => $vars['entity']->access_secret,
-	'class' => 'text_input',
-));
+			'internalname' => 'params[access_secret]',
+			'value' => $vars['entity']->access_secret,
+			'class' => 'text_input',
+		));
 
 $settings = <<<__HTML
 <div id="dropboxservice_site_settings">

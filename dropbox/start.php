@@ -22,7 +22,8 @@ define('DROPBOX_FORBIDDEN', 5);
 /**
  * Plugin's initialisation.
  *
- * @global <type> $CONFIG 
+ * @global <type> $CONFIG
+ * @return nothing
  */
 function dropbox_init() {
 	global $CONFIG;
@@ -153,8 +154,9 @@ function dropbox_page_handler($page) {
 		/* Error page. */
 		case 'error':
 			set_input('username', $page[1]);
-			if($ret)
-			  set_input('errcode', $ret);
+			if ($ret) {
+				set_input('errcode', $ret);
+			}
 			include(dirname(__FILE__) . '/error.php');
 			break;
 		default:

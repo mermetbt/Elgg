@@ -1,8 +1,8 @@
 <?php
+
 /**
  * Dropbox widget language file
  */
-
 $english = array(
 	'dropbox:title' => 'Dropbox',
 	'dropbox:info' => 'Manage your Dropbox and share files',
@@ -34,19 +34,25 @@ $english = array(
 	'dropbox:consumer_secret' => 'Consumer Secret',
 	'dropbox:usersettings:userpass' => 'Enter your username and password.',
 	'dropbox:usersettings:linked' => 'Your account is linked.',
-	'dropbox:usersettings:description' => 'Link your ' . $CONFIG->site->name . ' account with Dropbox.',
+	'dropbox:usersettings:description' => 'Link your ' . 
+											$CONFIG->site->name .
+											' account with Dropbox.',
 	'dropbox:account:name' => 'Name :',
 	'dropbox:account:email' => 'E-Mail :',
 	'dropbox:account:space:available' => 'Available space :',
 	'dropbox:account:space:free' => 'Free space : ',
 	'dropbox:error' => 'An error occured',
 	'dropbox:error:badconsumer' => 'Bad consumer, contact your administrator.',
-	'dropbox:error:missingconsumer' => 'Your administrator need to add the consumer key and secret.',
+	'dropbox:error:missingconsumer' => 'Your administrator need to add the \
+										consumer key and secret.',
 	'dropbox:error:baduserpass' => 'Bad username or password.',
-	'dropbox:error:missinguserpass' => 'You may define the username and password of your Dropbox account in the plugin setting menu.',
-	'dropbox:error:forbidden' => 'Forbidden: This could mean a bad username or password, or a file or folder already existing at the target location.',
-    'dropbox:error:unknow' => 'Unknow error, contact your administrator.',
+	'dropbox:error:missinguserpass' => 'You may define the username and \
+										password of your Dropbox account \
+										in the plugin setting menu.',
+	'dropbox:error:forbidden' => 'Forbidden: This could mean a bad username or \
+								password, or a file or folder already existing \
+								at the target location.',
+	'dropbox:error:unknow' => 'Unknow error, contact your administrator.',
 	'dropbox:error:nofilesselected' => 'Error : no file selected.',
-
 );
 add_translation("en", $english);

@@ -11,7 +11,7 @@ $body = elgg_view('input/hidden', array(
 		));
 
 $body .= '<div class="contentWrapper">';
-if(empty($path)) {
+if (empty($path)) {
 	$path = '/';
 }
 
@@ -56,6 +56,6 @@ $body .= elgg_view('input/submit', array(
 $body .= '</div>';
 
 echo elgg_view('input/form', array(
-			'body' => $body,
-			'action' => $vars['url'] . 'action/dropbox/share',
-			'method' => 'post'));
+	'body' => $body,
+	'action' => $vars['url'] . 'action/dropbox/share',
+	'method' => 'post'));

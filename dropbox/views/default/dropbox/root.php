@@ -7,10 +7,10 @@ $files = $vars['files'];
 /* Get only the contents informations and sort to obtain dir on the top. */
 $d = array();
 $f = array();
-foreach($files['contents'] AS $file) {
-	if($file['is_dir'] == 1) {
+foreach ($files['contents'] AS $file) {
+	if ($file['is_dir'] == 1) {
 		$d[] = $file;
-	}else {
+	} else {
 		$f[] = $file;
 	}
 }
@@ -31,7 +31,11 @@ $upload_button = elgg_view('input/submit', array(
 			'value' => elgg_echo('upload'),
 			'class' => 'upload_button',
 		));
-echo elgg_view('input/form', array('body' => $body.$upload_button, 'action' => $vars['url'] . 'pg/dropbox/upload', 'method' => 'post'));
+echo elgg_view('input/form', array(
+			'body' => $body . $upload_button,
+			'action' => $vars['url'] . 'pg/dropbox/upload',
+			'method' => 'post'
+	));
 
 /* Create the 'new folder' button. */
 $mkdir_button = elgg_view('input/submit', array(
@@ -39,7 +43,10 @@ $mkdir_button = elgg_view('input/submit', array(
 			'value' => elgg_echo('dropbox:newfolder'),
 			'class' => 'mkdir_button',
 		));
-echo elgg_view('input/form', array('body' => $body.$mkdir_button, 'action' => $vars['url'] . 'pg/dropbox/mkdir', 'method' => 'post'));
+echo elgg_view('input/form', array(
+			'body' => $body . $mkdir_button,
+			'action' => $vars['url'] . 'pg/dropbox/mkdir',
+			'method' => 'post'));
 
 /* Create the 'share a folder' button. */
 $share_button = elgg_view('input/submit', array(
@@ -47,7 +54,10 @@ $share_button = elgg_view('input/submit', array(
 			'value' => elgg_echo('dropbox:sharefolder'),
 			'class' => 'share_button',
 		));
-//echo elgg_view('input/form', array('body' => $body.$share_button, 'action' => $vars['url'] . 'pg/dropbox/share', 'method' => 'post'));
+//echo elgg_view('input/form', array(
+//			'body' => $body.$share_button,
+//			'action' => $vars['url'] . 'pg/dropbox/share',
+//			'method' => 'post'));
 
 echo '</div>';
 
@@ -76,9 +86,12 @@ if (!empty($files['path']) || empty($files)) {
 	$reduced_path = substr($path, 0, -strlen(strchr($sub_path, '/')));
 
 	/* Create the link to the change the Dropbox directory. */
-	$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'], array('path' => $reduced_path));
-	$link = '<a class="dropbox-sprite-link" href="' . $url . '"><img class="sprite s_arrow_turn_up" alt=""></a>';
-    $link .= '<a class="dropbox-link" href="' . $url . '">' . elgg_echo('dropbox:parent_folder') . '</a>';
+	$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'],
+										array('path' => $reduced_path));
+	$link = '<a class="dropbox-sprite-link" href="' . $url . '">\
+			 <img class="sprite s_arrow_turn_up" alt=""></a>';
+	$link .= '<a class="dropbox-link" href="' . $url . '">' .
+			elgg_echo('dropbox:parent_folder') . '</a>';
 
 	/* Create the row */
 	$body .= '<td class="selector"></td>';
@@ -98,7 +111,7 @@ foreach ($contents AS $file) {
 	$filename = substr($file['path'], 1 + strlen($path));
 
 	/* Select the icon */
-	switch($file['icon']) {
+	switch ($file['icon']) {
 		case 'folder':
 			$css = 's_folder_blue';
 			break;
@@ -111,22 +124,32 @@ foreach ($contents AS $file) {
 		default:
 			$css = 's_page_white_text';
 	}
-	
+
 	/* Create the link to the change the Dropbox directory. */
-	if($file['is_dir']) {
-		$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'], array('path' => $file['path']));
-		$link = '<a class="dropbox-sprite-link" href="' . $url . '"><img class="sprite ' . $css . '" alt=""></a>';
-		$link .= '<a class="dropbox-link" href="' . $url . '">' . $filename . '</a>';
+	if ($file['is_dir']) {
+		$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'],
+											array('path' => $file['path']));
+		$link = '<a class="dropbox-sprite-link" href="' . $url . '">\
+				<img class="sprite ' . $css . '" alt=""></a>';
+		$link .= '<a class="dropbox-link" href="' . $url . '">' . $filename
+					. '</a>';
 	} else {
-		$value = elgg_view('input/hidden', array('internalname' => 'file', 'value' => $file['path']));
-		$link = '<a class="dropbox-sprite-link" href="#" onclick="javascript:document.dropbox_form_'.$counter.'.submit();"><img class="sprite ' . $css . '" alt=""></a>';
-		$link .= '<a class="dropbox-link" href="#" onclick="javascript:document.dropbox_form_'.$counter.'.submit();">' . $filename . '</a>';
+		$value = elgg_view('input/hidden', array(
+					'internalname' => 'file',
+					'value' => $file['path']
+				));
+		$link = '<a class="dropbox-sprite-link" href="#" \
+				onclick="javascript:document.dropbox_form_' . $counter
+				. '.submit();"><img class="sprite ' . $css . '" alt=""></a>';
+		$link .= '<a class="dropbox-link" href="#" \
+				onclick="javascript:document.dropbox_form_' . $counter
+				. '.submit();">' . $filename . '</a>';
 		$form_accu .= elgg_view('input/form', array(
-						'id' => 'dropbox_form_'.$counter,
-						'internalname' => 'dropbox_form_'.$counter,
-						'body' => $value,
-						'action' => $vars['url'] . 'action/dropbox/getfile',
-						'method' => 'post'));
+					'id' => 'dropbox_form_' . $counter,
+					'internalname' => 'dropbox_form_' . $counter,
+					'body' => $value,
+					'action' => $vars['url'] . 'action/dropbox/getfile',
+					'method' => 'post'));
 	}
 
 	/* Create the checkbox */
@@ -162,7 +185,11 @@ $body .= elgg_view('input/submit', array(
 			'class' => 'delete_button',
 		));
 
-echo elgg_view('input/form', array('body' => $body, 'action' => $vars['url'] . 'action/dropbox/delete', 'method' => 'post'));
+echo elgg_view('input/form', array(
+				'body' => $body,
+				'action' => $vars['url'] . 'action/dropbox/delete',
+				'method' => 'post'
+	));
 
 echo '</div>';
 echo $form_accu;

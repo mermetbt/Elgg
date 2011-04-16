@@ -9,7 +9,7 @@ $param = elgg_view('input/hidden', array(
 		));
 
 echo '<div class="contentWrapper">';
-if(empty($path)) {
+if (empty($path)) {
 	$path = '/';
 }
 
@@ -31,7 +31,7 @@ $cancel = elgg_view('input/submit', array(
 		));
 
 echo elgg_view('input/form', array(
-			'body' => $param . $field . $save . $cancel,
-			'action' => $vars['url'] . 'action/dropbox/mkdir',
-			'method' => 'post'));
+	'body' => $param . $field . $save . $cancel,
+	'action' => $vars['url'] . 'action/dropbox/mkdir',
+	'method' => 'post'));
 echo '</div>';

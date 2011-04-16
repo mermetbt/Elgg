@@ -6,7 +6,7 @@ gatekeeper();
 /* Get the file. */
 $file = get_input('file');
 
-if(!$file) {
+if (!$file) {
 	register_error(elgg_echo("dropbox:notfound"));
 	forward($_SERVER['HTTP_REFERER']);
 }
@@ -20,13 +20,12 @@ try {
 	}
 
 	$content = $CONFIG->dropbox->getFile($file);
-	
+
 	header('Content-type: text/plain');
-	header('Content-Disposition: attachment; filename="'. basename($file) .'"');
-	
+	header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+
 	echo $content;
 	die();
-
 } catch (Dropbox_Exception_NotFound $e) {
 	register_error(elgg_echo("dropbox:notfound"));
 	forward($_SERVER['HTTP_REFERER']);

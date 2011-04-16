@@ -13,12 +13,12 @@ if (!is_array($files)) {
 }
 
 /* Check if there are files selected, and forward directly if not. */
-foreach($files AS $file) {
-	if($file) {
+foreach ($files AS $file) {
+	if ($file) {
 		$new_files[] = $file;
 	}
 }
-if(!isset($new_files)) {
+if (!isset($new_files)) {
 	register_error(elgg_echo("dropbox:error:nofilesselected"));
 	forward($_SERVER['HTTP_REFERER']);
 }

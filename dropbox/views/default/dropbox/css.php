@@ -55,7 +55,14 @@
 	color:white;
 }
 
-.sprite{padding-bottom: 0px; padding-left: 16px;width:16px;height:16px;background-image:url("<?php echo $vars['url']; ?>mod/dropbox/graphics/sprites.png");background-repeat:no-repeat}
+.sprite{
+	padding-bottom: 0px;
+	padding-left: 16px;
+	width:16px;
+	height:16px;
+	background-image:url("<?php echo $vars['url']; ?>mod/dropbox/graphics/sprites.png");
+	background-repeat:no-repeat
+}
 .s_page_paste{background-position:left -3460px;}
 .s_email_go{background-position:left -1736px;}
 .s_comment_add{background-position:left -1095px;}

@@ -28,7 +28,7 @@ $body .= elgg_view('input/submit', array(
 $body .= '</div>';
 
 echo elgg_view('input/form', array(
-			'body' => $body,
-			'enctype' => 'multipart/form-data',
-			'action' => $vars['url'] . 'action/dropbox/upload',
-			'method' => 'post'));
+	'body' => $body,
+	'enctype' => 'multipart/form-data',
+	'action' => $vars['url'] . 'action/dropbox/upload',
+	'method' => 'post'));
