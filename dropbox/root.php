@@ -14,8 +14,22 @@ $area2 = elgg_view_title(elgg_echo("dropbox:root"));
 
 /* Get parameters */
 $path = get_input('path');
+if (!isset($path)) {
+	$path = '';
+}
 
-$area2 .= elgg_view('dropbox/root', array('path' => $path));
+/* Get listing of the root directory. */
+global $CONFIG;
+$dropbox = $CONFIG->dropbox;
+try {
+	$files = $dropbox->getLinks($path);
+} catch(Dropbox_Exception_Forbidden $e) {
+	forward('pg/dropbox/error/?errcode=5');
+} catch(Dropbox_Exception $e) {
+	forward('pg/dropbox/error/');
+}
+
+$area2 .= elgg_view('dropbox/root', array('path' => $path, 'files' => $files));
 
 $body = elgg_view_layout("two_column_left_sidebar", '', $area2);
 

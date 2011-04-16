@@ -14,6 +14,9 @@
 		case DROPBOX_USERPASS_MISSING:
 			echo elgg_echo('dropbox:error:missinguserpass');
 			break;
+		case DROPBOX_FORBIDDEN:
+			echo elgg_echo('dropbox:error:forbidden');
+			break;
 		default:
 			echo elgg_echo('dropbox:error:unknow');
 	}

@@ -36,6 +36,7 @@ $english = array(
 	'dropbox:error:missingconsumer' => 'Your administrator need to add the consumer key and secret.',
 	'dropbox:error:baduserpass' => 'Bad username or password.',
 	'dropbox:error:missinguserpass' => 'You may define the username and password of your Dropbox account in the plugin setting menu.',
+	'dropbox:error:forbidden' => 'Forbidden: This could mean a bad username or password, or a file or folder already existing at the target location.',
     'dropbox:error:unknow' => 'Unknow error, contact your administrator.',
 );
 add_translation("en", $english);

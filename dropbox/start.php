@@ -17,6 +17,7 @@ define('DROPBOX_CONSUMER_MISSING', 1);
 define('DROPBOX_CONSUMER_FAILED', 2);
 define('DROPBOX_USERPASS_MISSING', 3);
 define('DROPBOX_USERPASS_FAILED', 4);
+define('DROPBOX_FORBIDDEN', 5);
 
 /**
  * Plugin's initialisation.
@@ -144,7 +145,8 @@ function dropbox_page_handler($page) {
 		/* Error page. */
 		case 'error':
 			set_input('username', $page[1]);
-			set_input('errcode', $ret);
+			if($ret)
+			  set_input('errcode', $ret);
 			include(dirname(__FILE__) . "/error.php");
 			break;
 		default:

@@ -1,25 +1,8 @@
 <?php
 
-$dropbox = $CONFIG->dropbox;
-
-/* Just a little test to try folder creation and deletion.
-  $dropbox->createFolder('tmp');
-
-  try {
-  $dropbox->delete('tmp');
-  } catch(Dropbox_Exception_NotFound $e) {
-  echo '<b>', 'Directory not found', '</b>';
-  }
- */
-
-/* Get the directory in args. */
+/* Get the path and listing in args. */
 $path = $vars['path'];
-if (!isset($path)) {
-	$path = '';
-}
-
-/* Get listing of the root directory. */
-$files = $dropbox->getLinks($path);
+$files = $vars['files'];
 
 /* Get only the contents informations and sort to obtain dir on the top. */
 $contents = array_sort($files['contents'], 'is_dir');

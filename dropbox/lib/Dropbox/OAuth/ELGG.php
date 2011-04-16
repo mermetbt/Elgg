@@ -83,7 +83,7 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 	function url_getter_getUrl($url, $args = array()) {
 
 		global $release;
-
+		//echo $url.'<br>';
 		$userAgent = '(Elgg ' . $release . ')';
 		$ch = curl_init();
 		//curl_setopt($ch, CURLOPT_HTTPHEADER, "Host: api.dropbox.com");
@@ -114,7 +114,6 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 
 		$rc = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$info = curl_getinfo($ch);
-
 		curl_close($ch);
 
 		return array('rc' => $rc, 'html' => $html);
@@ -173,8 +172,7 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 			case '401':
 				throw new Dropbox_Exception_Forbidden('Forbidden. Username or password incorrect.');
 			case '403':
-				return NULL;
-				//throw new Dropbox_Exception_Forbidden('Forbidden. This could mean a bad OAuth request, or a file or folder already existing at the target location.');
+				throw new Dropbox_Exception_Forbidden('Forbidden. This could mean a bad OAuth request, or a file or folder already existing at the target location.');
 			/* Not Found */
 			case '404' :
 				throw new Dropbox_Exception_NotFound('Resource at uri: ' . $uri . ' could not be found');

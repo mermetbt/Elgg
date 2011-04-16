@@ -15,7 +15,7 @@ try {
 	/* Connection to dropbox. */
 	$ret = dropbox_connect();
 	if ($ret) {
-		forward("pg/dropbox/error/", array('errcode' => $ret));
+		forward('pg/dropbox/error/?errcode=' . $ret);
 	}
 
 	/* Delete */
@@ -26,7 +26,7 @@ try {
 	}
 
 	system_message(elgg_echo('dropbox:deleted'));
-	forward("pg/dropbox/root/?path={$path}");
+	forward('pg/dropbox/root/?path=' . $path);
 } catch (Dropbox_Exception_NotFound $e) {
 	register_error(elgg_echo("dropbox:notfound"));
 	forward($_SERVER['HTTP_REFERER']);
