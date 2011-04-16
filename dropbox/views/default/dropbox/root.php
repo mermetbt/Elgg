@@ -76,8 +76,10 @@ if (!empty($files['path']) || empty($files)) {
 
 	/* Create the link to the change the Dropbox directory. */
 	$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'], array('path' => $reduced_path));
-	$link = '<a href="' . $url . '"><img class="sprite s_arrow_turn_up" alt=""> ' . elgg_echo('dropbox:parent_folder') . '</a>';
+	$link = '<a class="dropbox-sprite-link" href="' . $url . '"><img class="sprite s_arrow_turn_up" alt=""></a>';
+    $link .= '<a class="dropbox-link" href="' . $url . '">' . elgg_echo('dropbox:parent_folder') . '</a>';
 
+	/* Create the row */
 	$body .= '<td class="selector"></td>';
 	$body .= '<td class="filename">' . $link . '</td>';
 	$body .= '<td class="size"></td>';
@@ -93,6 +95,7 @@ foreach ($contents AS $file) {
 	/* Remove the / at the begining of the filename. */
 	$filename = substr($file['path'], 1 + strlen($path));
 
+	/* Select the icon */
 	switch($file['icon']) {
 		case 'folder':
 			$css = 's_folder_blue';
@@ -109,13 +112,17 @@ foreach ($contents AS $file) {
 	
 	/* Create the link to the change the Dropbox directory. */
 	$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'], array('path' => $file['path']));
-	$link = '<a href="' . $url . '"><img class="sprite ' . $css . '" alt=""> ' . $filename . '</a>';
+	$link = '<a class="dropbox-sprite-link" href="' . $url . '"><img class="sprite ' . $css . '" alt=""></a>';
+    $link .= '<a class="dropbox-link" href="' . $url . '">' . $filename . '</a>';
 
+	/* Create the checkbox */
 	$checkbox = elgg_view('input/checkboxes', array(
 				'internalname' => 'selected_files[]',
 				'options' => array('' => $file['path']),
 				'class' => 'checkbox',
 			));
+
+	/* Remove the size and modified fields if the file is a directory. */
 	if ($file['is_dir'] == 1) {
 		$size = '';
 		$modified = '';
@@ -124,6 +131,7 @@ foreach ($contents AS $file) {
 		$modified = $file['modified'];
 	}
 
+	/* Create the row */
 	$body .= '<td class="selector">' . $checkbox . '</td>';
 	$body .= '<td class="filename">' . $link . '</td>';
 	$body .= '<td class="size">' . $size . '</td>';

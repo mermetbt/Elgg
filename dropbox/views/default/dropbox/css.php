@@ -415,6 +415,16 @@
 .s_folder_user_gray_blue{background-position:left -2453px;}
 .s_group_add{background-position:left -2639px;}
 
+.dropbox-link {
+	border: 0px solid #0;
+	text-decoration: none;
+}
+
+.dropbox-sprite-link, .dropbox-sprite-link:hover {
+	border: 0px solid #0;
+	text-decoration: none;
+}
+
 a .sprite {
 	margin-right: 5px;
 }
