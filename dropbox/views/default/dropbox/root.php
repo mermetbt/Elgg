@@ -5,7 +5,16 @@ $path = $vars['path'];
 $files = $vars['files'];
 
 /* Get only the contents informations and sort to obtain dir on the top. */
-$contents = array_sort($files['contents'], 'is_dir');
+$d = array();
+$f = array();
+foreach($files['contents'] AS $file) {
+	if($file['is_dir'] == 1) {
+		$d[] = $file;
+	}else {
+		$f[] = $file;
+	}
+}
+$contents = array_merge($d, $f);
 
 echo '<div class="contentWrapper">';
 

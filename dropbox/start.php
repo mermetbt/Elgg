@@ -156,53 +156,6 @@ function dropbox_page_handler($page) {
 	return true;
 }
 
-/**
- * This method sort an array by a specific key and maintains index association.
- *
- * I found this method at this address http://php.net/manual/fr/function.sort.php
- * and is written by phpdotnet at m4tt dot co dot uk.
- * I improved the method to support empty keys.
- *
- * @param array $array Array to sort
- * @param string $on Key to sort
- * @param const $order Order (SORT_ASC/SORT_DESC)
- * @return array Sorted array
- */
-function array_sort($array, $on, $order=SORT_ASC) {
-	$new_array = array();
-	$sortable_array = array();
-
-	if (count($array) > 0) {
-		foreach ($array as $k => $v) {
-			if (is_array($v)) {
-				foreach ($v as $k2 => $v2) {
-					$v2 = (empty($v2)) ? 2 : 1;
-					if ($k2 == $on) {
-						$sortable_array[$k] = $v2;
-					}
-				}
-			} else {
-				$sortable_array[$k] = $v;
-			}
-		}
-
-		switch ($order) {
-			case SORT_ASC:
-				asort($sortable_array);
-				break;
-			case SORT_DESC:
-				arsort($sortable_array);
-				break;
-		}
-
-		foreach ($sortable_array as $k => $v) {
-			$new_array[$k] = $array[$k];
-		}
-	}
-
-	return $new_array;
-}
-
 register_elgg_event_handler('init', 'system', 'dropbox_init');
 
 global $CONFIG;

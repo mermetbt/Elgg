@@ -11,7 +11,6 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-
 .dropbox-list thead th {
 	font-weight: bold;
 	text-align: center;
@@ -21,6 +20,9 @@
 .dropbox-list .selector {
 	text-align: left;
 	width: 30px;
+}
+.dropbox-list .filename {
+	text-align: left;
 }
 .dropbox_buttons {
 	-webkit-border-radius: 8px;
