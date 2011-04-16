@@ -85,6 +85,7 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 		global $release;
 		//echo $url.'<br>';
 		$userAgent = '(Elgg ' . $release . ')';
+		
 		$ch = curl_init();
 		//curl_setopt($ch, CURLOPT_HTTPHEADER, "Host: api.dropbox.com");
 		curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
