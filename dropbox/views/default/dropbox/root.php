@@ -16,40 +16,41 @@ foreach($files['contents'] AS $file) {
 }
 $contents = array_merge($d, $f);
 
-echo '<div class="contentWrapper">';
-
-/* Create the 'upload' button. */
-$upload_button = elgg_view('input/submit', array(
-			'internalname' => 'params[upload]',
-			'value' => elgg_echo('dropbox:upload'),
-			'class' => 'upload_button',
-		));
-
-/* Create the 'new folder' button. */
-$mkdir_button = elgg_view('input/submit', array(
-			'internalname' => 'params[mkdir]',
-			'value' => elgg_echo('dropbox:newfolder'),
-			'class' => 'mkdir_button',
-		));
-
-/* Create the 'share a folder' button. */
-$share_button = elgg_view('input/submit', array(
-			'internalname' => 'params[share]',
-			'value' => elgg_echo('dropbox:sharefolder'),
-			'class' => 'share_button',
-		));
-
-/* Print the buttons. */
-echo '<div class="dropbox_buttons">';
-$body = $upload_button . $mkdir_button . $share_button;
-echo elgg_view('input/form', array('body' => $body, 'action' => $vars['url'] . 'actions/dropbox/upload', 'method' => 'post'));
-echo '</div>';
-
-/* Add parameters to the form */
+/* Add path parameter to the forms */
 $body = elgg_view('input/hidden', array(
 			'internalname' => 'path',
 			'value' => $path,
 		));
+
+echo '<div class="contentWrapper">';
+
+echo '<div class="dropbox-buttons">';
+/* Create the 'upload' button. */
+$upload_button = elgg_view('input/submit', array(
+			'internalname' => 'upload',
+			'value' => elgg_echo('upload'),
+			'class' => 'upload_button',
+		));
+echo elgg_view('input/form', array('body' => $body.$upload_button, 'action' => $vars['url'] . 'pg/dropbox/upload', 'method' => 'post'));
+
+/* Create the 'new folder' button. */
+$mkdir_button = elgg_view('input/submit', array(
+			'internalname' => 'mkdir',
+			'value' => elgg_echo('dropbox:newfolder'),
+			'class' => 'mkdir_button',
+		));
+echo elgg_view('input/form', array('body' => $body.$mkdir_button, 'action' => $vars['url'] . 'pg/dropbox/mkdir', 'method' => 'post'));
+
+/* Create the 'share a folder' button. */
+$share_button = elgg_view('input/submit', array(
+			'internalname' => 'share',
+			'value' => elgg_echo('dropbox:sharefolder'),
+			'class' => 'share_button',
+		));
+echo elgg_view('input/form', array('body' => $body.$share_button, 'action' => $vars['url'] . 'pg/dropbox/share', 'method' => 'post'));
+
+echo '</div>';
+
 
 /* Add the table header of the filelist. */
 $body .= '<table class="dropbox-list">' . '<thead>';

@@ -22,17 +22,20 @@
 .dropbox-list .filename {
 	text-align: left;
 }
-.dropbox_buttons {
+.dropbox-buttons {
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	background:white;
 	margin:5px 10px;
 	padding:5px;
 }
+.dropbox-buttons form {
+	display: inline;
+}
 .dropbox_buttons input {
 	margin:0 0 0 10px;
 }
-.dropbox_buttons input[type="button"] {
+.dropbox-buttons input[type="button"] {
 	font: 12px/100% Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	color: #4690D6;
@@ -46,7 +49,7 @@
 	margin:0 0 0 10px;
 	cursor: pointer;
 }
-.dropbox_buttons input[type="button"]:hover {
+.dropbox-buttons input[type="button"]:hover {
 	background: #0054a7;
 	border: 1px solid #0054a7;
 	color:white;

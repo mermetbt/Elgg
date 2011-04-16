@@ -131,23 +131,31 @@ function dropbox_page_handler($page) {
 		/* Main page. */
 		case 'index':
 			set_input('username', $page[1]);
-			include(dirname(__FILE__) . "/index.php");
+			include(dirname(__FILE__) . '/index.php');
 			break;
 		/* Listing of the files in the directory. */
 		case 'root':
 			set_input('username', $page[1]);
-			include(dirname(__FILE__) . "/root.php");
+			include(dirname(__FILE__) . '/root.php');
 			break;
-//		case 'put':
-//			set_input('username', $page[1]);
-//			include(dirname(__FILE__) . "/put.php");
-//			break;
+		/* Upload a file. */
+		case 'upload':
+			include(dirname(__FILE__) . '/upload.php');
+			break;
+		/* Make a directory */
+		case 'mkdir':
+			include(dirname(__FILE__) . '/mkdir.php');
+			break;
+		/* Share a folder */
+		case 'share':
+			include(dirname(__FILE__) . '/share.php');
+			break;
 		/* Error page. */
 		case 'error':
 			set_input('username', $page[1]);
 			if($ret)
 			  set_input('errcode', $ret);
-			include(dirname(__FILE__) . "/error.php");
+			include(dirname(__FILE__) . '/error.php');
 			break;
 		default:
 			return false;
@@ -160,4 +168,7 @@ register_elgg_event_handler('init', 'system', 'dropbox_init');
 
 global $CONFIG;
 
+register_action('dropbox/share', false, $CONFIG->pluginspath . 'dropbox/actions/share.php');
+register_action('dropbox/upload', false, $CONFIG->pluginspath . 'dropbox/actions/upload.php');
+register_action('dropbox/mkdir', false, $CONFIG->pluginspath . 'dropbox/actions/mkdir.php');
 register_action('dropbox/delete', false, $CONFIG->pluginspath . 'dropbox/actions/delete.php');

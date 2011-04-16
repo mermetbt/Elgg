@@ -4,11 +4,25 @@
 gatekeeper();
 
 /* Get the parameters : files to delete and path. */
+$path = get_input('path');
 $files = get_input('selected_files');
+
+/* Transform the files data in an array */
 if (!is_array($files)) {
 	$files = array($files);
 }
-$path = get_input('path');
+
+/* Check if there are files selected, and forward directly if not. */
+foreach($files AS $file) {
+	if($file) {
+		$new_files[] = $file;
+	}
+}
+if(!isset($new_files)) {
+	register_error(elgg_echo("dropbox:error:nofilesselected"));
+	forward($_SERVER['HTTP_REFERER']);
+}
+$files = $new_files;
 
 /* Delete procedure */
 try {
@@ -20,9 +34,7 @@ try {
 
 	/* Delete */
 	foreach ($files AS $file) {
-		if ($file) {
-			$CONFIG->dropbox->delete($file);
-		}
+		$CONFIG->dropbox->delete($file);
 	}
 
 	system_message(elgg_echo('dropbox:deleted'));
