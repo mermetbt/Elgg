@@ -111,20 +111,8 @@ foreach ($contents AS $file) {
 	$filename = substr($file['path'], 1 + strlen($path));
 
 	/* Select the icon */
-	switch ($file['icon']) {
-		case 'folder':
-			$css = 's_folder_blue';
-			break;
-		case 'folder_photos':
-			$css = 's_folder_photos_blue';
-			break;
-		case 'folder_public':
-			$css = 's_folder_public';
-			break;
-		default:
-			$css = 's_page_white_text';
-	}
-
+	$css = 's_'.$file['icon'];
+	
 	/* Create the link to the change the Dropbox directory. */
 	if ($file['is_dir']) {
 		$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'],
@@ -193,3 +181,4 @@ echo elgg_view('input/form', array(
 
 echo '</div>';
 echo $form_accu;
+
