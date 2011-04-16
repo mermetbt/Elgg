@@ -88,8 +88,8 @@ if (!empty($files['path']) || empty($files)) {
 	/* Create the link to the change the Dropbox directory. */
 	$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'],
 										array('path' => $reduced_path));
-	$link = '<a class="dropbox-sprite-link" href="' . $url . '">\
-			 <img class="sprite s_arrow_turn_up" alt=""></a>';
+	$link = '<a class="dropbox-sprite-link" href="' . $url . '">' .
+			 '<img class="sprite s_arrow_turn_up" alt=""></a>';
 	$link .= '<a class="dropbox-link" href="' . $url . '">' .
 			elgg_echo('dropbox:parent_folder') . '</a>';
 
@@ -129,8 +129,8 @@ foreach ($contents AS $file) {
 	if ($file['is_dir']) {
 		$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'],
 											array('path' => $file['path']));
-		$link = '<a class="dropbox-sprite-link" href="' . $url . '">\
-				<img class="sprite ' . $css . '" alt=""></a>';
+		$link = '<a class="dropbox-sprite-link" href="' . $url . '">'.
+				'<img class="sprite ' . $css . '" alt=""></a>';
 		$link .= '<a class="dropbox-link" href="' . $url . '">' . $filename
 					. '</a>';
 	} else {
