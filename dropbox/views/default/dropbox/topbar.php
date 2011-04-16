@@ -9,4 +9,4 @@
 gatekeeper();
 
 ?>
-<a href="<?php echo $vars['url']; ?>pg/dropbox/" class="dropbox_root" >Dropbox</a>
+<a href="<?php echo $vars['url']; ?>pg/dropbox/" class="dropbox_root" ><img class="sprite s_dropbox_blue" alt=""></a>

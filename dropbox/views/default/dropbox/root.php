@@ -76,7 +76,7 @@ if (!empty($files['path']) || empty($files)) {
 
 	/* Create the link to the change the Dropbox directory. */
 	$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'], array('path' => $reduced_path));
-	$link = '<a href="' . $url . '">' . elgg_echo('dropbox:parent_folder') . '</a>';
+	$link = '<a href="' . $url . '"><img class="sprite s_arrow_turn_up" alt=""> ' . elgg_echo('dropbox:parent_folder') . '</a>';
 
 	$body .= '<td class="selector"></td>';
 	$body .= '<td class="filename">' . $link . '</td>';
@@ -93,10 +93,23 @@ foreach ($contents AS $file) {
 	/* Remove the / at the begining of the filename. */
 	$filename = substr($file['path'], 1 + strlen($path));
 
-
+	switch($file['icon']) {
+		case 'folder':
+			$css = 's_folder_blue';
+			break;
+		case 'folder_photos':
+			$css = 's_folder_photos_blue';
+			break;
+		case 'folder_public':
+			$css = 's_folder_public';
+			break;
+		default:
+			$css = 's_page_white_text';
+	}
+	
 	/* Create the link to the change the Dropbox directory. */
 	$url = elgg_http_add_url_query_elements($_SERVER['REQUEST_URI'], array('path' => $file['path']));
-	$link = '<a href="' . $url . '">' . $filename . '</a>';
+	$link = '<a href="' . $url . '"><img class="sprite ' . $css . '" alt=""> ' . $filename . '</a>';
 
 	$checkbox = elgg_view('input/checkboxes', array(
 				'internalname' => 'selected_files[]',
