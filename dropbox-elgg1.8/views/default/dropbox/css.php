@@ -15,6 +15,12 @@
 	border-style: dotted;
 	padding-bottom: 2px;
 }
+
+.dropbox-list td {
+	height: 18px;
+	padding: 0px;
+	margin: 10px;
+}
 .dropbox-list .selector {
 	text-align: left;
 	width: 25px;
@@ -30,7 +36,8 @@
 }
 
 .sprite{
-	padding-bottom: 0px;
+	padding-top: 0;
+	padding-bottom: 1px;
 	padding-left: 16px;
 	width:16px;
 	height:16px;

@@ -4,6 +4,7 @@
  * Dropbox widget language file
  */
 $english = array(
+	'dropbox' => 'Dropbox',
 	'dropbox:title' => 'Dropbox',
 	'dropbox:info' => 'Manage your Dropbox and share files',
 	'dropbox:username' => 'Enter your Dropbox username.',

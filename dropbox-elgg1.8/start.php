@@ -28,7 +28,7 @@ define('DROPBOX_FORBIDDEN', 5);
 function dropbox_init() {
 	global $CONFIG;
 
-	// Show the Dropbox menu on the topbar
+	/* Show the Dropbox menu on the topbar. */
 	elgg_register_menu_item('topbar', array(
 		'name' => 'dropbox',
 		'href' => 'dropbox/',
@@ -36,8 +36,7 @@ function dropbox_init() {
 		'priority' => 500,
 	));
 
-
-	// Submenu for the Dropbox content
+	/* Submenu for the Dropbox content. */
 	if (elgg_get_context() == "dropbox") {
 		elgg_register_menu_item('page', array(
 			'name' => 'dropbox:info',
@@ -53,20 +52,22 @@ function dropbox_init() {
 		));
 	}
 
-	// Allow Dropbox plugin to have url formatted
+	/* Allow Dropbox plugin to have url formatted */
 	elgg_register_page_handler('dropbox', 'dropbox_page_handler');
 
-	// Extend hover-over and profile menu
+	/* Extend hover-over and profile menu */
 	elgg_extend_view('profile/menu/links', 'dropbox/menu');
 
 	/* Add CSS rules. */
 	elgg_extend_view('css/elgg', 'dropbox/css');
 
-	elgg_register_action('dropbox/share', $CONFIG->pluginspath . 'dropbox/actions/share.php');
-	elgg_register_action('dropbox/upload', $CONFIG->pluginspath . 'dropbox/actions/upload.php');
-	elgg_register_action('dropbox/mkdir', $CONFIG->pluginspath . 'dropbox/actions/mkdir.php');
-	elgg_register_action('dropbox/delete', $CONFIG->pluginspath . 'dropbox/actions/delete.php');
-	elgg_register_action('dropbox/getfile', $CONFIG->pluginspath . 'dropbox/actions/getfile.php');
+	/* Register actions. */
+	$action_path = elgg_get_plugins_path() . 'dropbox/actions/dropbox';
+	elgg_register_action('dropbox/share', $action_path . '/share.php');
+	elgg_register_action('dropbox/upload', $action_path . '/upload.php');
+	elgg_register_action('dropbox/mkdir', $action_path . '/mkdir.php');
+	elgg_register_action('dropbox/delete', $action_path . '/delete.php');
+	elgg_register_action('dropbox/getfile', $action_path . '/getfile.php');
 }
 
 /**
@@ -79,14 +80,14 @@ function dropbox_connect() {
 	global $CONFIG;
 
 	/* Initialize Dropbox connection. */
-	$consumer_key = get_plugin_setting('consumer_key', 'dropbox');
-	$consumer_secret = get_plugin_setting('consumer_secret', 'dropbox');
+	$consumer_key = elgg_get_plugin_setting('consumer_key', 'dropbox');
+	$consumer_secret = elgg_get_plugin_setting('consumer_secret', 'dropbox');
 	if ($consumer_key && $consumer_secret) {
 
 		/* check user settings */
-		$user_id = get_loggedin_userid();
-		$token = get_plugin_usersetting('token', $user_id, 'dropbox');
-		$token_secret = get_plugin_usersetting('token_secret', $user_id, 'dropbox');
+		$user_id = elgg_get_logged_in_user_guid();
+		$token = elgg_get_plugin_user_setting('token', $user_id, 'dropbox');
+		$token_secret = elgg_get_plugin_user_setting('token_secret', $user_id, 'dropbox');
 
 		if ($token && $token_secret) {
 			try {
@@ -143,42 +144,38 @@ function dropbox_page_handler($page) {
 		$page[0] = 'index';
 	}
 
-	/* Set the default username. */
-	if (!isset($page[1])) {
-		$page[1] = get_loggedin_user()->username;
-	}
+	elgg_push_breadcrumb(elgg_echo('dropbox'), 'dropbox');
+
+	$pages_path = elgg_get_plugins_path() . 'dropbox/pages/dropbox';
 
 	/* Select the view to print. */
 	switch ($page[0]) {
 		/* Main page. */
 		case 'index':
-			set_input('username', $page[1]);
-			include(dirname(__FILE__) . '/index.php');
+			include($pages_path . '/index.php');
 			break;
 		/* Listing of the files in the directory. */
 		case 'root':
-			set_input('username', $page[1]);
-			include(dirname(__FILE__) . '/root.php');
+			include($pages_path . '/root.php');
 			break;
 		/* Upload a file. */
 		case 'upload':
-			include(dirname(__FILE__) . '/upload.php');
+			include($pages_path . '/upload.php');
 			break;
 		/* Make a directory */
 		case 'mkdir':
-			include(dirname(__FILE__) . '/mkdir.php');
+			include($pages_path . '/mkdir.php');
 			break;
 		/* Share a folder */
 		case 'share':
-			include(dirname(__FILE__) . '/share.php');
+			include($pages_path . '/share.php');
 			break;
 		/* Error page. */
 		case 'error':
-			set_input('username', $page[1]);
 			if ($ret) {
 				set_input('errcode', $ret);
 			}
-			include(dirname(__FILE__) . '/error.php');
+			include($pages_path . '/error.php');
 			break;
 		default:
 			return false;
