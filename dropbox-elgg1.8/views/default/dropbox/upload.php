@@ -2,14 +2,13 @@
 
 $path = $vars['path'];
 
-$body .= '<div class="contentWrapper">';
+$body = elgg_echo('dropbox:upload:info', array($path)) . '<br>';
 
+/* Add path parameter to the form */
 $body .= elgg_view('input/hidden', array(
 			'name' => 'path',
 			'value' => $path,
 		));
-
-$body .= sprintf(elgg_echo('dropbox:upload:info'), $path);
 
 $body .= elgg_view('input/file', array(
 			'name' => 'file',
@@ -27,10 +26,9 @@ $body .= elgg_view('input/submit', array(
 			'class' => 'elgg-button elgg-button-cancel',
 	));
 
-$body .= '</div>';
-
 echo elgg_view('input/form', array(
 	'body' => $body,
 	'enctype' => 'multipart/form-data',
 	'action' => $vars['url'] . 'action/dropbox/upload',
-	'method' => 'post'));
+	'method' => 'post',
+	'class' => 'dropbox-actions'));

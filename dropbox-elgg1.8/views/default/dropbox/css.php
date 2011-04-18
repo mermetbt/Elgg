@@ -28,13 +28,43 @@
 .dropbox-list .filename {
 	text-align: left;
 }
-.dropbox-buttons form {
+.dropbox-buttons form, .dropbox-buttons fieldset {
 	display:inline;
 }
 .dropbox-buttons input {
 	margin-left: 10px;
 }
 
+.dropbox-actions input {
+	display: inline;
+}
+.dropbox-actions input[type="text"] {
+	width: 200px;
+}
+.dropbox-input-file {
+	
+}
+.dropbox-actions input[type="submit"] {
+	margin-left: 10px;
+}
+.dropbox-actions fieldset {
+	margin: 0 auto;
+}
+.dropbox-table td {
+	border-bottom: 1px solid silver;
+}
+.dropbox-table td.namefield {
+	width:250px;
+	text-align: left;
+	vertical-align: middle;
+}
+.dropbox-table td.namefield p {
+	margin:0;
+	vertical-align: middle;
+	line-height: 1.1em;
+	padding:5px 0 5px 0;
+	font-weight: bold;
+}
 .sprite{
 	padding-top: 0;
 	padding-bottom: 1px;

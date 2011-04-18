@@ -22,13 +22,12 @@ $body = elgg_view('input/hidden', array(
 			'value' => $path,
 		));
 
-echo '<div class="dropbox-buttons">';
 /* Create the 'upload' button. */
 $upload_button = elgg_view('input/submit', array(
 			'value' => elgg_echo('upload'),
-			'class' => 'elgg-button elgg-button-submit',
+			'class' => 'elgg-button-action',
 		));
-echo elgg_view('input/form', array(
+$upload_form = elgg_view('input/form', array(
 			'body' => $body . $upload_button,
 			'action' => $vars['url'] . 'pg/dropbox/upload',
 			'method' => 'post'
@@ -37,30 +36,33 @@ echo elgg_view('input/form', array(
 /* Create the 'new folder' button. */
 $mkdir_button = elgg_view('input/submit', array(
 			'value' => elgg_echo('dropbox:newfolder'),
-			'class' => 'elgg-button elgg-button-submit',
+			'class' => 'elgg-button-action',
 		));
-echo elgg_view('input/form', array(
+$mkdir_form = elgg_view('input/form', array(
 			'body' => $body . $mkdir_button,
 			'action' => $vars['url'] . 'pg/dropbox/mkdir',
 			'method' => 'post'));
 
+
 /* Create the 'share a folder' button. */
-$share_button = elgg_view('input/submit', array(
-			'value' => elgg_echo('dropbox:sharefolder'),
-			'class' => 'elgg-button elgg-button-submit',
-		));
+//$share_button = elgg_view('input/submit', array(
+//			'value' => elgg_echo('dropbox:sharefolder'),
+//			'class' => 'elgg-button elgg-button-submit',
+//		));
 //echo elgg_view('input/form', array(
 //			'body' => $body.$share_button,
 //			'action' => $vars['url'] . 'pg/dropbox/share',
 //			'method' => 'post'));
 
+echo '<div class="dropbox-buttons">';
+echo $upload_form, $mkdir_form;
 echo '</div>';
 
 
 /* Add the table header of the filelist. */
 $body .= '<table class="dropbox-list">' . '<thead>';
 
-$checkbox = elgg_view('input/checkboxes', array(
+$checkbox = elgg_view('input/checkbox', array(
 			'class' => 'selector-checkbox',
 			'options' => array('' => 'select'),
 			'js' => 'onclick="javascript:$(\'.checkbox\').click();"',
@@ -136,7 +138,7 @@ foreach ($contents AS $file) {
 	}
 
 	/* Create the checkbox */
-	$checkbox = elgg_view('input/checkboxes', array(
+	$checkbox = elgg_view('input/checkbox', array(
 				'name' => 'selected_files[]',
 				'options' => array('' => $file['path']),
 				'class' => 'checkbox',

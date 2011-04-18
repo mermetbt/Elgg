@@ -11,6 +11,7 @@ $english = array(
 	'dropbox:info' => 'Informations',
 	'dropbox:root' => 'Your directory',
 	'dropbox:user' => 'Your Dropbox',
+	'dropbox:youraccount' => 'Your account',
 	'dropbox:newfolder' => 'New folder',
 	'dropbox:sharefolder' => 'Share a folder',
 	'dropbox:put' => 'Put a file',

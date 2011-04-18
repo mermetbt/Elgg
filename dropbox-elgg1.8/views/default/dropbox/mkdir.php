@@ -8,7 +8,6 @@ $param = elgg_view('input/hidden', array(
 			'value' => $path,
 		));
 
-echo '<div class="contentWrapper">';
 if (empty($path)) {
 	$path = '/';
 }
@@ -23,17 +22,17 @@ $field = elgg_view('input/text', array(
 $save = elgg_view('input/submit', array(
 			'name' => 'submit',
 			'value' => elgg_echo('save'),
-			'class' => 'elgg-button elgg-button-submit',
+			'class' => 'elgg-button-submit',
 		));
 
 $cancel = elgg_view('input/submit', array(
 			'name' => 'submit',
 			'value' => elgg_echo('cancel'),
-			'class' => 'elgg-button elgg-button-cancel',
+			'class' => 'elgg-button-cancel',
 		));
 
 echo elgg_view('input/form', array(
 	'body' => $param . $field . $save . $cancel,
 	'action' => $vars['url'] . 'action/dropbox/mkdir',
-	'method' => 'post'));
-echo '</div>';
+	'method' => 'post',
+	'class' => 'dropbox-actions'));
