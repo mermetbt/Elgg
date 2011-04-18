@@ -4,10 +4,7 @@
 gatekeeper();
 
 /* Get parameters */
-$path = get_input('path');
-if (!isset($path)) {
-	$path = '';
-}
+$path = get_input('path', '');
 
 /* Set the page title */
 $title = elgg_echo('dropbox:newfolder');

@@ -4,10 +4,7 @@
 gatekeeper();
 
 /* Get parameters */
-$path = get_input('path');
-if (!isset($path)) {
-	$path = '';
-}
+$path = get_input('path', '');
 
 /* Get listing of the root directory. */
 global $CONFIG;

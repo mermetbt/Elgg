@@ -4,8 +4,8 @@
 gatekeeper();
 
 /* Get the parameters : files to delete and path. */
-$path = get_input('path');
-$files = get_input('selected_files');
+$path = get_input('path', '');
+$files = get_input('selected_files', array());
 
 /* Transform the files data in an array */
 if (!is_array($files)) {

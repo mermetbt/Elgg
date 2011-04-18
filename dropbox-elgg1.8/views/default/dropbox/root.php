@@ -140,6 +140,7 @@ foreach ($contents AS $file) {
 	/* Create the checkbox */
 	$checkbox = elgg_view('input/checkbox', array(
 				'name' => 'selected_files[]',
+				'value' => $file['path'],
 				'options' => array('' => $file['path']),
 				'class' => 'checkbox',
 			));

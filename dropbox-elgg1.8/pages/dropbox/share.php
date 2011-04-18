@@ -4,10 +4,7 @@
 gatekeeper();
 
 /* Get parameters */
-$path = get_input('path');
-if (!isset($path)) {
-	$path = '';
-}
+$path = get_input('path', '');
 
 /* */
 elgg_push_breadcrumb(elgg_echo('dropbox:root'), 'dropbox/root');
