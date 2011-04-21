@@ -5,13 +5,13 @@
  * with a plugin contain keys which are really used by the plugin.
  *
  * @package Tools
- * @class LanguageChecker
+ * @class ElggDevLanguageChecker
  */
-class LanguageChecker {
+class ElggDevLanguageChecker {
 
-	var $_plugin;		  // Contains the name of the plugin.
+	var $_plugin;	      // Contains the name of the plugin.
 	var $_translations;   // Contains the set of key => translation.
-	var $_files;		  // Contains the PHP files of the plugin.
+	var $_files;	      // Contains the PHP files of the plugin.
 
 	/**
 	 * This function return an array which contains all the php files in the directory $c_dir.
@@ -20,6 +20,7 @@ class LanguageChecker {
 	 * @param string $path  Current path (set to . at the beginning).
 	 * @return an array containing all the PHP files.
 	 */
+
 	private function getPhpFiles($c_dir, $path) {
 		$path = ltrim($path) . '/' . $c_dir;
 
@@ -130,10 +131,10 @@ class LanguageChecker {
 
 						/* We get all the keys from the contents. */
 						preg_match_all("/elgg_echo\('(.*)'/U",
-						$contents,
-						$out, PREG_PATTERN_ORDER);
+								$contents,
+								$out, PREG_PATTERN_ORDER);
 						$found_keys = array_merge($found_keys, $out[1]);
-						
+
 						/* We check each key on the contents. */
 						foreach ($tr AS $key => $stc) {
 							if (strpos($contents, "'$key'") !== false || strpos($contents, "\"$key\"") !== false) {
@@ -160,12 +161,13 @@ class LanguageChecker {
 		/* Look for the undefined keys. */
 		global $CONFIG;
 		$undefined_keys = array();
-		foreach($found_keys AS $key) {
-			if(!isset($CONFIG->translations['en'][$key])) {
+		foreach ($found_keys AS $key) {
+			if (!isset($CONFIG->translations['en'][$key])) {
 				$undefined_keys[] = $key;
 			}
 		}
 
 		return array($undefined_keys, $unmatched);
 	}
+
 }
