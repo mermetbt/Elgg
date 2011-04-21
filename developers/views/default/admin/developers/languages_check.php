@@ -41,16 +41,32 @@ if($selected_plugin != null) {
 	/* Open the plugin and check. */
 	$pl = new LanguageChecker();
 	$pl->load($plugin);
-	$unmatched = $pl->check();
+	$results = $pl->check();
+	$undefined = $results[0];
+	$unmatched = $results[1];
 
-	
 	echo elgg_echo('languages_check:plugin_name') . ' : <b>' . $plugin .'</b><br><br>';
 
-	if(!empty($unmatched['en'])) {
-		echo elgg_echo('languages_check:missing_keys') . '<br>';
+	/* Print the good title for undefined keys. */
+	if(!empty($undefined)) {
+		echo '<b>', elgg_echo('languages_check:undefined_keys'), '</b><br>';
 	} else {
-		echo elgg_echo('languages_check:found_keys') . '<br>';
+		echo '<b>', elgg_echo('languages_check:defined_keys'), '</b><br>';
 	}
+
+	/* Print the list of undefined keys. */
+	echo '<ul>';
+	foreach($undefined AS $key => $val) {
+		echo '<li>' . $val . '</li>';
+	}
+	echo '</ul><br>';
+
+	/* Print the good title for unmatched keys. */
+	if(!empty($unmatched['en'])) {
+		echo '<b>', elgg_echo('languages_check:missing_keys'), '</b><br>';
+	} else {
+		echo '<b>', elgg_echo('languages_check:found_keys'), '</b><br>';
+	}	
 
 	/* Print the list of unmatched keys. */
 	echo '<ul>';

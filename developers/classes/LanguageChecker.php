@@ -109,6 +109,7 @@ class LanguageChecker {
 	 */
 	function check() {
 		$unmatched = array();
+		$found_keys = array();
 		if (!empty($this->_translations)) {
 			foreach ($this->_translations AS $lg => $tr) {
 
@@ -127,6 +128,12 @@ class LanguageChecker {
 					} else {
 						$contents = fread($handle, $size);
 
+						/* We get all the keys from the contents. */
+						preg_match_all("/elgg_echo\('(.*)'/U",
+						$contents,
+						$out, PREG_PATTERN_ORDER);
+						$found_keys = array_merge($found_keys, $out[1]);
+						
 						/* We check each key on the contents. */
 						foreach ($tr AS $key => $stc) {
 							if (strpos($contents, "'$key'") !== false || strpos($contents, "\"$key\"") !== false) {
@@ -146,6 +153,19 @@ class LanguageChecker {
 				}
 			}
 		}
-		return $unmatched;
+
+		/* Make unique the selection. */
+		$found_keys = array_unique($found_keys);
+
+		/* Look for the undefined keys. */
+		global $CONFIG;
+		$undefined_keys = array();
+		foreach($found_keys AS $key) {
+			if(!isset($CONFIG->translations['en'][$key])) {
+				$undefined_keys[] = $key;
+			}
+		}
+
+		return array($undefined_keys, $unmatched);
 	}
 }

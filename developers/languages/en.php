@@ -38,7 +38,9 @@ $english = array(
 	// languages checking
 	'languages_check:plugin_name' => 'Plugin name',
 	'languages_check:missing_keys' => 'The following keys are missing :',
-	'languages_check:found_keys' => 'All the keys found.'
+	'languages_check:found_keys' => 'All the keys found.',
+	'languages_check:undefined_keys' => 'The following keys are undefined :',
+	'languages_check:defined_keys' => 'All the keys defined.',
 );
 
 add_translation('en', $english);
