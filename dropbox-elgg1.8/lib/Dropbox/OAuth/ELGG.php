@@ -167,7 +167,7 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 		$reqUrl = $request->to_url();
 
 		$arguments['headers'] = $httpHeaders;
-		
+
 		/* Execute the request. */
 		$out = $this->url_getter_getUrl($reqUrl, $arguments);
 

@@ -45,14 +45,14 @@ $english = array(
 	'dropbox:account:space:free' => 'Free space : ',
 	'dropbox:error' => 'An error occured',
 	'dropbox:error:badconsumer' => 'Bad consumer, contact your administrator.',
-	'dropbox:error:missingconsumer' => 'Your administrator need to add the \
+	'dropbox:error:missingconsumer' => 'Your administrator need to add the
 										consumer key and secret.',
 	'dropbox:error:baduserpass' => 'Bad username or password.',
-	'dropbox:error:missinguserpass' => 'You may define the username and \
-										password of your Dropbox account \
+	'dropbox:error:missinguserpass' => 'You may define the username and the
+										password of your Dropbox account 
 										in the plugin setting menu.',
-	'dropbox:error:forbidden' => 'Forbidden: This could mean a bad username or \
-								password, or a file or folder already existing \
+	'dropbox:error:forbidden' => 'Forbidden: This could mean a bad username or 
+								password, or a file or folder already existing
 								at the target location.',
 	'dropbox:error:unknow' => 'Unknow error, contact your administrator.',
 	'dropbox:error:nofilesselected' => 'Error : no file selected.',
