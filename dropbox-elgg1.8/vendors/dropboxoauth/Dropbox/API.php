@@ -19,6 +19,16 @@ class Dropbox_API {
      * Dropbox root-path
      */
     const ROOT_DROPBOX = 'dropbox';
+    
+    /**
+     * API URl
+     */
+    protected $api_url = 'https://api.dropbox.com/1/';
+    
+    /**
+     * Content API URl
+     */
+    protected $api_content_url = 'https://api-content.dropbox.com/1/';
 
     /**
      * OAuth object 
@@ -40,10 +50,15 @@ class Dropbox_API {
      * @param Dropbox_OAuth Dropbox_Auth object
      * @param string $root default root path (sandbox or dropbox) 
      */
-    public function __construct(Dropbox_OAuth $oauth, $root = self::ROOT_DROPBOX) {
+    public function __construct(Dropbox_OAuth $oauth, $root = self::ROOT_DROPBOX, $useSSL = true) {
 
         $this->oauth = $oauth;
         $this->root = $root;
+        $this->useSSL = $useSSL;
+        if (!$this->useSSL)
+        {
+            throw new Dropbox_Exception('Dropbox REST API now requires that all requests use SSL');
+        }
 
     }
 
@@ -58,20 +73,12 @@ class Dropbox_API {
      *
      * @param string $email 
      * @param string $password 
+     * @deprecated This method is no longer supported
      * @return array 
      */
     public function getToken($email, $password) {
 
-        $data = $this->oauth->fetch('http://api.dropbox.com/0/token', array(
-            'email' => $email, 
-            'password' => $password
-        ),'POST');
-
-        $data = json_decode($data['body']); 
-        return array(
-            'token' => $data->token,
-            'token_secret' => $data->secret,
-        );
+        throw new Dropbox_Exception('This API method is deprecated as of the version 1 API');
 
     }
 
@@ -82,7 +89,7 @@ class Dropbox_API {
      */
     public function getAccountInfo() {
 
-        $data = $this->oauth->fetch('http://api.dropbox.com/0/account/info');
+        $data = $this->oauth->fetch($this->api_url . 'account/info');
         return json_decode($data['body'],true);
 
     }
@@ -94,18 +101,12 @@ class Dropbox_API {
      * @param string $first_name 
      * @param string $last_name 
      * @param string $password 
+     * @deprecated This method is no longer supported
      * @return bool 
      */
     public function createAccount($email, $first_name, $last_name, $password) {
 
-        $result = $this->oauth->fetch('http://api.dropbox.com/0/account',array(
-            'email'      => $email,
-            'first_name' => $first_name,
-            'last_name'  => $last_name,
-            'password'   => $password,
-          ), 'POST');
-
-        return $result['body']==='OK'; 
+        throw new Dropbox_Exception('This API method is deprecated as of the version 1 API');
 
     }
 
@@ -120,14 +121,8 @@ class Dropbox_API {
     public function getFile($path = '', $root = null) {
 
         if (is_null($root)) $root = $this->root;
-
-		/* Fix a bug with the special character. */
-		$path = urlencode($path);
-        $path = str_replace('%2F', '/', $path);
-		$path = str_replace('+', '%20', $path);
-
-
-        $result = $this->oauth->fetch('http://api-content.dropbox.com/0/files/' . $root . '/' . ltrim($path,'/'));
+        $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
+        $result = $this->oauth->fetch($this->api_content_url . 'files/' . $root . '/' . ltrim($path,'/'));
         return $result['body'];
 
     }
@@ -142,32 +137,30 @@ class Dropbox_API {
      */
     public function putFile($path, $file, $root = null) {
 
-		/* Fix a bug with the special character. */
 		$path = urlencode($path);
         $path = str_replace('%2F', '/', $path);
 		$path = str_replace('+', '%20', $path);
-
-        $directory = dirname($path);
+		$path = str_replace('~', '%2F', $path);
+		
+		$directory = dirname($path);
         $filename = basename($path);
-		echo $path;
-		if($directory==='.') $directory = '';
+		
+        if($directory==='.') $directory = '';
         if (is_null($root)) $root = $this->root;
 
         if (is_string($file)) {
 
-            $file = fopen($file, 'r');
+            $file = fopen($file,'r');
 
         } elseif (!is_resource($file)) {
-
             throw new Dropbox_Exception('File must be a file-resource or a string');
-            
         }
+        $result=$this->multipartFetch($this->api_content_url . 'files/' . 
+                $root . '/' . trim($directory,'/'), $file, $filename);
+        
+        if(!isset($result["httpStatus"]) || $result["httpStatus"] != 200) 
+            throw new Dropbox_Exception("Uploading file to Dropbox failed");
 
-		if(!$file) {
-			throw new Dropbox_Exception('File not found : '.$file);
-		}
-
-        $this->multipartFetch('http://api-content.dropbox.com/1/files/' . $root . '/' . trim($directory,'/'), $file, $filename);
         return true;
     }
 
@@ -185,7 +178,7 @@ class Dropbox_API {
     public function copy($from, $to, $root = null) {
 
         if (is_null($root)) $root = $this->root;
-        $response = $this->oauth->fetch('http://api.dropbox.com/0/fileops/copy', array('from_path' => $from, 'to_path' => $to, 'root' => $root));
+        $response = $this->oauth->fetch($this->api_url . 'fileops/copy', array('from_path' => $from, 'to_path' => $to, 'root' => $root));
 
         return json_decode($response['body'],true);
 
@@ -207,8 +200,7 @@ class Dropbox_API {
         // Making sure the path starts with a /
         $path = '/' . ltrim($path,'/');
 
-        $response = $this->oauth->fetch('http://api.dropbox.com/0/fileops/create_folder', array('path' => $path, 'root' => $root), 'GET');
-		
+        $response = $this->oauth->fetch($this->api_url . 'fileops/create_folder', array('path' => $path, 'root' => $root),'POST');
         return json_decode($response['body'],true);
 
     }
@@ -225,7 +217,7 @@ class Dropbox_API {
     public function delete($path, $root = null) {
 
         if (is_null($root)) $root = $this->root;
-        $response = $this->oauth->fetch('http://api.dropbox.com/0/fileops/delete', array('path' => $path, 'root' => $root));
+        $response = $this->oauth->fetch($this->api_url . 'fileops/delete', array('path' => $path, 'root' => $root));
         return json_decode($response['body']);
 
     }
@@ -243,7 +235,7 @@ class Dropbox_API {
     public function move($from, $to, $root = null) {
 
         if (is_null($root)) $root = $this->root;
-        $response = $this->oauth->fetch('http://api.dropbox.com/0/fileops/move', array('from_path' => $from, 'to_path' => $to, 'root' => $root));
+        $response = $this->oauth->fetch($this->api_url . 'fileops/move', array('from_path' => rawurldecode($from), 'to_path' => rawurldecode($to), 'root' => $root));
 
         return json_decode($response['body'],true);
 
@@ -261,7 +253,7 @@ class Dropbox_API {
      * @return array 
      */
     public function getLinks($path, $root = null) {
-        
+
         if (is_null($root)) $root = $this->root;
 
 		/* Fix a bug with the special character. */
@@ -272,8 +264,7 @@ class Dropbox_API {
 		/* Requests to the dropbox website. */
         $response = $this->oauth->fetch('http://api.dropbox.com/0/files/' . $root . '/' . ltrim($path,'/'));
         return json_decode($response['body'],true);
-         
-
+        
     }
 
     /**
@@ -295,9 +286,10 @@ class Dropbox_API {
         );
 
         if (!is_null($hash)) $args['hash'] = $hash; 
-        if (!is_null($fileLimit)) $args['file_limit'] = $hash; 
+        if (!is_null($fileLimit)) $args['file_limit'] = $fileLimit; 
 
-        $response = $this->oauth->fetch('http://api.dropbox.com/0/metadata/' . $root . '/' . ltrim($path,'/'), $args);
+        $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
+        $response = $this->oauth->fetch($this->api_url . 'metadata/' . $root . '/' . ltrim($path,'/'), $args);
 
         /* 304 is not modified */
         if ($response['httpStatus']==304) {
@@ -319,7 +311,7 @@ class Dropbox_API {
     public function getThumbnail($path, $size = 'small', $root = null) {
 
         if (is_null($root)) $root = $this->root;
-        $response = $this->oauth->fetch('http://api-content.dropbox.com/0/thumbnails/' . $root . '/' . ltrim($path,'/'),array('size' => $size));
+        $response = $this->oauth->fetch($this->api_content_url . 'thumbnails/' . $root . '/' . ltrim($path,'/'),array('size' => $size));
 
         return $response['body'];
 
@@ -338,12 +330,11 @@ class Dropbox_API {
         $boundary = 'R50hrfBj5JYyfR3vF3wR96GPCC9Fd2q2pVMERvEaOE3D8LZTgLLbRpNwXek3';
 
         $headers = array(
-            'Content-Type: multipart/form-data; boundary=' . $boundary,
-			'Content-Disposition: form-data; name=file; filename='.$filename,
+            'Content-Type' => 'multipart/form-data; boundary=' . $boundary,
         );
 
         $body="--" . $boundary . "\r\n";
-        $body.="Content-Disposition: form-data; name=file; filename=".urldecode($filename)."\r\n";
+        $body.="Content-Disposition: form-data; name=file; filename=".rawurldecode($filename)."\r\n";
         $body.="Content-type: application/octet-stream\r\n";
         $body.="\r\n";
         $body.=stream_get_contents($file);
@@ -352,9 +343,9 @@ class Dropbox_API {
 
         // Dropbox requires the filename to also be part of the regular arguments, so it becomes
         // part of the signature. 
-        $uri .= '?file=' . $filename;
+        $uri.='?file=' . $filename;
 
-        return $this->oauth->fetch($uri, array('post' => 1, 'data' => $body), 'POST', $headers);
+        return $this->oauth->fetch($uri, $body, 'POST', $headers);
 
     }
 

@@ -28,7 +28,10 @@ try {
 	system_message(sprintf(elgg_echo('dropbox:upload:uploaded'), $file));
 	forward('pg/dropbox/root/?path=' . $path);
 } catch (Dropbox_Exception_NotFound $e) {
-	register_error(elgg_echo("dropbox:notfound"));
+	register_error(elgg_echo('dropbox:notfound'));
 	forward($_SERVER['HTTP_REFERER']);
+} catch(Dropbox_Exception_Forbidden $e) {
+	register_error(elgg_echo('dropbox:forbidden'));
+	forward('pg/dropbox/root/?path=' . $path);
 }
 

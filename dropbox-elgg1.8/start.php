@@ -8,8 +8,9 @@
  * 
  * @package ElggDropbox
  */
+
 /* Include the Dropbox modified API. */
-include(dirname(__FILE__) . '/lib/Dropbox/autoload.php');
+include(dirname(__FILE__) . '/vendors/dropboxoauth/Dropbox/autoload.php');
 
 /* Define all the status of the current Dropbox connection. */
 define('DROPBOX_AUTH_OK', 0);
@@ -27,7 +28,7 @@ define('DROPBOX_FORBIDDEN', 5);
  */
 function dropbox_init() {
 	global $CONFIG;
-
+	
 	/* Show the Dropbox menu on the topbar. */
 	elgg_register_menu_item('topbar', array(
 		'name' => 'dropbox',
@@ -68,6 +69,7 @@ function dropbox_init() {
 	elgg_register_action('dropbox/mkdir', $action_path . '/mkdir.php');
 	elgg_register_action('dropbox/delete', $action_path . '/delete.php');
 	elgg_register_action('dropbox/getfile', $action_path . '/getfile.php');
+	
 }
 
 /**

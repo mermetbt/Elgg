@@ -41,7 +41,7 @@ $mkdir_button = elgg_view('input/submit', array(
 $mkdir_form = elgg_view('input/form', array(
 			'body' => $body . $mkdir_button,
 			'action' => $vars['url'] . 'pg/dropbox/mkdir',
-			'method' => 'post'));
+			'method' => 'get'));
 
 
 /* Create the 'share a folder' button. */

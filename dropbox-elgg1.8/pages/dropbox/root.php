@@ -14,6 +14,7 @@ try {
 } catch(Dropbox_Exception_Forbidden $e) {
 	forward('pg/dropbox/error/?errcode=5');
 } catch(Dropbox_Exception $e) {
+	register_error($e);
 	forward('pg/dropbox/error/');
 }
 
