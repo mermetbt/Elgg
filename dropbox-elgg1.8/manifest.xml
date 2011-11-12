@@ -13,10 +13,6 @@
 		<version>1.8</version>
 	</requires>
 	<requires>
-		<type>plugin</type>
-		<name>oauth_api</name>
-	</requires>
-	<requires>
 		<type>php_extension</type>
 		<name>curl</name>
 	</requires>	
