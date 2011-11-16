@@ -19,6 +19,7 @@ define('DROPBOX_CONSUMER_FAILED', 2);
 define('DROPBOX_USERPASS_MISSING', 3);
 define('DROPBOX_USERPASS_FAILED', 4);
 define('DROPBOX_FORBIDDEN', 5);
+define('DROPBOX_NOTFOUND', 6);
 
 /**
  * Plugin's initialisation.

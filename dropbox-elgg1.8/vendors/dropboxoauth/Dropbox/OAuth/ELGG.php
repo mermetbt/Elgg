@@ -186,7 +186,7 @@ class Dropbox_OAuth_ELGG extends Dropbox_OAuth {
 				throw new Dropbox_Exception_Forbidden('Operation attempted not allowed by token type. Root parameter is not full access or Sandbox.');
 			/* Forbidden */
 			case '401':
-				throw new Dropbox_Exception_Forbidden('Forbidden. Bad or expired token.');
+				throw new Dropbox_Exception_Forbidden('Forbidden. Bad or expired token, or unauthorized request.');
 			case '403':
 				throw new Dropbox_Exception_Forbidden('Forbidden. This could mean a bad OAuth request, or a file or folder already existing at the target location.');
 			/* Not Found */

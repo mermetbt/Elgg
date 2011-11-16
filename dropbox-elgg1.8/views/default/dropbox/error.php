@@ -17,6 +17,9 @@ switch ($vars['errcode']) {
 	case DROPBOX_FORBIDDEN:
 		echo elgg_echo('dropbox:error:forbidden');
 		break;
+	case DROPBOX_NOTFOUND:
+		echo elgg_echo('dropbox:error:notfound');
+		break;
 	default:
 		echo elgg_echo('dropbox:error:unknow');
 }
