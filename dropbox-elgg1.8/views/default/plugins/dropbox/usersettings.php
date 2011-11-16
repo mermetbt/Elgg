@@ -6,10 +6,12 @@ $user_id = elgg_get_logged_in_user_guid();
 $consumer_key = elgg_get_plugin_setting('consumer_key', 'dropbox');
 $consumer_secret = elgg_get_plugin_setting('consumer_secret', 'dropbox');
 
+$dropbox_root = elgg_get_plugin_setting('root', 'dropbox');
+
 /* Check the validity of the consumer. */
 try {
 	$oauth = new Dropbox_OAuth_ELGG($consumer_key, $consumer_secret);
-	$dropbox = new Dropbox_API($oauth);
+	$dropbox = new Dropbox_API($oauth, $dropbox_root);
 } catch (Dropbox_Exception $e) {
 	register_error(elgg_echo('dropbox:error:badconsumer'));
 }

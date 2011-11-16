@@ -256,7 +256,7 @@ class Dropbox_API {
 	$path = str_replace('+', '%20', $path);
 
 	/* Requests to the dropbox website. */
-	$response = $this->oauth->fetch('http://api-content.dropbox.com/1/metadata/' . $root . '/' . ltrim($path, '/'));
+	$response = $this->oauth->fetch($this->api_url . 'metadata/' . $root . '/' . ltrim($path, '/'));
 	return json_decode($response['body'], true);
     }
 

@@ -14,7 +14,7 @@ try {
 } catch(Dropbox_Exception_Forbidden $e) {
 	forward('pg/dropbox/error/?errcode='.DROPBOX_FORBIDDEN);
 } catch(Dropbox_Exception_NotFound $e) {
-	die('<pre>' . $e . '</pre>');
+	//die('<pre>' . $e . '</pre>');
 	forward('pg/dropbox/error/?errcode='.DROPBOX_NOTFOUND);
 } catch(Dropbox_Exception $e) {
 	register_error($e);
