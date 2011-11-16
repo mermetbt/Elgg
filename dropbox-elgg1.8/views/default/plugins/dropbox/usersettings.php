@@ -91,6 +91,12 @@ try {
 	if ($dropbox && $token && $token_secret) {
 		$dropbox->getAccountInfo();
 		echo elgg_echo('dropbox:usersettings:linked');
+		echo elgg_view('output/url', array(
+			'name' => 'unlink',
+			'text' => elgg_echo('dropbox:usersettings:links:unlink'),
+			'is_action' => true,
+			'href' => $vars['url'].'/action/dropbox/unlink'
+		));
 	} else {
 		echo elgg_echo('dropbox:usersettings:authentication');
 	}

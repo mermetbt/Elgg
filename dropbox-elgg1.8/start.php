@@ -71,6 +71,9 @@ function dropbox_init() {
 	elgg_register_action('dropbox/delete', $action_path . '/delete.php');
 	elgg_register_action('dropbox/getfile', $action_path . '/getfile.php');
 	
+	/* User settings actions. */
+	elgg_register_action('dropbox/unlink', $action_path . '/unlink.php');
+	
 }
 
 /**
