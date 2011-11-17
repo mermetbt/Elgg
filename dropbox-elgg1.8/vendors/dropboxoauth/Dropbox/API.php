@@ -193,7 +193,7 @@ class Dropbox_API {
 
 	// Making sure the path starts with a /
 	$path = '/' . ltrim($path, '/');
-
+  
 	$response = $this->oauth->fetch($this->api_url . 'fileops/create_folder', array('path' => $path, 'root' => $root), 'POST');
 	return json_decode($response['body'], true);
     }

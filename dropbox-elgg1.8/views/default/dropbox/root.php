@@ -75,7 +75,7 @@ $body .= '<th class="modified">' . elgg_echo('dropbox:modified') . '</th>';
 $body .= '</thead>';
 
 /* Show the link to go to the parent directory if needed. */
-if (!empty($files['path']) || empty($files)) {
+if (!empty($path) && (!empty($files['path']) || empty($files))) {
 	$body .= '<tr>';
 
 	/* Remove the last directory in the path. */
